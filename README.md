@@ -26,12 +26,33 @@ When you are done, you can exit and shut down the vm with:
     $ vagrant halt
 ```
 
-## Manutally Installing Requirements (to be replaced by Dockerfile)
+## Reprovisioning the VM
+If you make changes to the Vagrantfile after the virtual machine (VM) is already created, you can reprovision the VM:
+
+```shell
+    $ exit
+    $ vagrant reload --provision
+    $ vagrant ssh
+```
+
+## Manually Installing Requirements 
 
 Install the necessary packages by running:
 ```shell
     $ pip install -r requirements.txt
 ```
+
+## Running the Flask app
+
+Create a .env file in the directory and add the content from: https://github.com/nyu-devops-team/customers/blob/data-model/dot-env-example
+
+Then you can run the Flask app: 
+
+```shell
+    $ flask run --host=0.0.0.0
+```
+
+Note: since you are running the service inside a virtual machine, you have to set the host to a public server so that the service can be accessible outside of the VM.
 
 ## Manually Running the Tests
 
