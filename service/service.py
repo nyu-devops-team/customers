@@ -101,6 +101,7 @@ def internal_server_error(error):
         status.HTTP_500_INTERNAL_SERVER_ERROR,
     )
 
+
 ######################################################################
 # GET INDEX
 ######################################################################
@@ -109,13 +110,16 @@ def index():
     """ Root URL response """
     app.logger.info("Request for Root URL")
     return (
-    	jsonify(
-    		name = "Customer REST API Service",
-    		version="1.0",
-    		paths=url_for("list_customers", _external=True), # url_for() generates the url for a function
-    	),
-    	status.HTTP_200_OK,
+        jsonify(
+            name="Customer REST API Service",
+            version="1.0",
+            paths=url_for(
+                "list_customers", _external=True
+            ),  # url_for() generates the url for a function
+        ),
+        status.HTTP_200_OK,
     )
+
 
 ######################################################################
 # LIST ALL CUSTOMERS
@@ -126,7 +130,8 @@ def list_customers():
     # TODO
 
     # Note: query filtering would also be implemented in this function
-    pass 
+    pass
+
 
 ######################################################################
 # RETRIEVE A CUSTOMER
@@ -140,6 +145,7 @@ def get_customers(customer_id):
     """
     # TODO
     pass
+
 
 ######################################################################
 # ADD A NEW CUSTOMER
@@ -184,15 +190,16 @@ def delete_customers(customer_id):
     pass
 
 
-
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
+
 
 def init_db():
     """ Initialies the SQLAlchemy app """
     global app
     Customer.init_db(app)
+
 
 def check_content_type(content_type):
     """ Checks that the media type is correct """

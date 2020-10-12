@@ -24,8 +24,10 @@ logger = logging.getLogger("flask.app")
 # Create the SQLAlchemy object to be initialized later in init_db()
 db = SQLAlchemy()
 
+
 class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
+
     pass
 
 
@@ -55,7 +57,11 @@ class Customer(db.Model):
     ##################################################
 
     def __repr__(self):
-        return "<Customer> %r %r>" % (self.first_name, self.last_name)
+        return "<Customer> %r %r id = [%s]>" % (
+            self.first_name,
+            self.last_name,
+            self.id,
+        )
 
     def create(self):
         """
@@ -84,11 +90,11 @@ class Customer(db.Model):
         """ Serializes a Customer into a dictionary """
         return {
             "id": self.id,
-            "first_name": self.first_name, 
+            "first_name": self.first_name,
             "last_name": self.last_name,
             "email": self.email,
             "address": self.address,
-            "active": self.active
+            "active": self.active,
         }
 
     def deserialize(self, data):
@@ -100,10 +106,10 @@ class Customer(db.Model):
         """
         try:
             self.first_name = data["first_name"]
-            self.last_name = data['last_name']
-            self.email = data['email']
-            self.address = data['address']
-            self.active = data['active']
+            self.last_name = data["last_name"]
+            self.email = data["email"]
+            self.address = data["address"]
+            self.active = data["active"]
         except KeyError as error:
             raise DataValidationError("Invalid customer: missing " + error.args[0])
         except TypeError as error:
@@ -118,8 +124,8 @@ class Customer(db.Model):
 
     @classmethod
     def init_db(cls, app):
-        """ Initializes the database session 
-        
+        """Initializes the database session
+
         :param app: the Flast app
         :type data: Flask
 
@@ -139,7 +145,7 @@ class Customer(db.Model):
 
     @classmethod
     def find(cls, customer_id):
-        """ Finds a Customer by it's ID 
+        """Finds a Customer by it's ID
 
         :param customer_id: the id of the Customer to find
         :type customer_id: int
@@ -148,11 +154,11 @@ class Customer(db.Model):
         :type: Pet
         """
         logger.info("Processing lookup for id %s ...", customer_id)
-        return cls.query.get(by_id)
+        return cls.query.get(customer_id)
 
     @classmethod
     def find_or_404(cls, customer_id):
-        """ Find a Customer by it's id 
+        """Find a Customer by it's id
 
         :param customer_id: the id of the Customer to find
         :type customer_id: int
@@ -161,12 +167,12 @@ class Customer(db.Model):
         :rtype: Pet
 
         """
-        logger.info("Processing lookup or 404 for id %s ...", by_id)
-        return cls.query.get_or_404(by_id)
+        logger.info("Processing lookup or 404 for id %s ...", customer_id)
+        return cls.query.get_or_404(customer_id)
 
     @classmethod
     def find_by_first_name(cls, first_name):
-        """ Returns all Customers with the given first name
+        """Returns all Customers with the given first name
 
         :param first_name: the first name of the Customers you want to match
         :type first_name: str
@@ -174,12 +180,12 @@ class Customer(db.Model):
         :return: a collction of Customers with the given first name
         :rtype: list
         """
-        logger.info("Processing name query for %s ...", name)
+        logger.info("Processing first name query for %s ...", first_name)
         return cls.query.filter(cls.first_name == first_name)
 
     @classmethod
     def find_by_last_name(cls, last_name):
-        """ Returns all Customers with the given last name
+        """Returns all Customers with the given last name
 
         :param last_name: the last name of the Customers you want to match
         :type last_name: str
@@ -187,12 +193,12 @@ class Customer(db.Model):
         :return: a collction of Customers with the given last name
         :rtype: list
         """
-        logger.info("Processing name query for %s ...", name)
+        logger.info("Processing last name query for %s ...", last_name)
         return cls.query.filter(cls.last_name == last_name)
 
     @classmethod
     def find_by_active(cls, active):
-        """ Return all Customers that are active
+        """Return all Customers that are active
 
         :param active: True for customers that are active (not suspended)
         :type active: boolean
@@ -203,5 +209,3 @@ class Customer(db.Model):
 
         # TODO
         pass
-
-

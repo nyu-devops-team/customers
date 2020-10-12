@@ -7,16 +7,20 @@ Test cases can be run with the following:
 """
 import os
 import logging
-from unittest
+import unittest
 from unittest.mock import MagicMock, patch
 from flask_api import status  # HTTP Status Codes
+
 from service.models import db
 from service.service import app, init_db
 
 # Disable all but ciritcal erros suirng unittest
 logging.disable(logging.CRITICAL)
 
-DATABASE_URI = os.getenv("DATABASE_URI", "sqlite:///../db/test.db")
+# DATABASE_URI = os.getenv("DATABASE_URI", "sqlite:///../db/test.db")
+DATABASE_URI = os.getenv(
+    "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
+)
 
 ######################################################################
 #  T E S T   C A S E S
@@ -31,7 +35,7 @@ class TestCustomers(unittest.TestCase):
         app.testing = True
 
         # setup the test database
-        app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+        app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 
     @classmethod
     def tearDownClass(cls):
@@ -41,19 +45,18 @@ class TestCustomers(unittest.TestCase):
     def setUp(self):
         """ This runs before each test """
         init_db()
-        db.drop_all() # clean the last tests
-        db.create_all() # create new tables
+        db.drop_all()  # clean the last tests
+        db.create_all()  # create new tables
         self.app = app.test_client()
-
 
     def tearDown(self):
         """ This runs after each test """
-        db.seession.remove()
+        db.session.remove()
         db.drop_all()
 
-######################################################################
-#  P L A C E   T E S T   C A S E S   H E R E 
-######################################################################
+    ######################################################################
+    #  P L A C E   T E S T   C A S E S   H E R E
+    ######################################################################
 
     def test_index(self):
         """ Test index call """
@@ -68,9 +71,3 @@ class TestCustomers(unittest.TestCase):
 ######################################################################
 if __name__ == "__main__":
     unittest.main()
-
-
-
-
-
-
