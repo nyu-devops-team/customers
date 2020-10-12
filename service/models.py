@@ -63,29 +63,29 @@ class Customer(db.Model):
             self.id,
         )
 
-    def create(self):
-        """
-        Creates a Customer to the database
-        """
-        logger.info("Creating %s %s", self.first_name, self.last_name)
-        self.id = None  # id must be None to generate the next primary key
-        db.session.add(self)
-        db.session.commit()
+    # def create(self):
+    #     """
+    #     Creates a Customer to the database
+    #     """
+    #     logger.info("Creating %s %s", self.first_name, self.last_name)
+    #     self.id = None  # id must be None to generate the next primary key
+    #     db.session.add(self)
+    #     db.session.commit()
 
-    def update(self):
-        """
-        Updates a Customer to the database
-        """
-        logger.info("Saving %s %s", self.first_name, self.last_name)
-        if not self.id:
-            raise DataValidationError("Update called with empty ID field")
-        db.session.commit()
+    # def update(self):
+    #     """
+    #     Updates a Customer to the database
+    #     """
+    #     logger.info("Saving %s %s", self.first_name, self.last_name)
+    #     if not self.id:
+    #         raise DataValidationError("Update called with empty ID field")
+    #     db.session.commit()
 
-    def delete(self):
-        """ Removes a Customer from the data store """
-        logger.info("Deleting %s %s", self.first_name, self.last_name)
-        db.session.delete(self)
-        db.session.commit()
+    # def delete(self):
+    #     """ Removes a Customer from the data store """
+    #     logger.info("Deleting %s %s", self.first_name, self.last_name)
+    #     db.session.delete(self)
+    #     db.session.commit()
 
     def serialize(self):
         """ Serializes a Customer into a dictionary """
@@ -138,75 +138,8 @@ class Customer(db.Model):
         app.app_context().push()
         db.create_all()  # make our sqlalchemy tables
 
-    @classmethod
-    def all(cls):
-        """ Returns all of the Customers in the database """
-        logger.info("Processing all Customers")
-        return cls.query.all()
-
-    @classmethod
-    def find(cls, customer_id):
-        """Finds a Customer by it's ID
-
-        :param customer_id: the id of the Customer to find
-        :type customer_id: int
-
-        :return: an instance with the customer_id, or None if not found
-        :type: Pet
-        """
-        logger.info("Processing lookup for id %s ...", customer_id)
-        return cls.query.get(customer_id)
-
-    @classmethod
-    def find_or_404(cls, customer_id):
-        """Find a Customer by it's id
-
-        :param customer_id: the id of the Customer to find
-        :type customer_id: int
-
-        :return: an instance with the customer_id, or 404_NOT_FOUND if not found
-        :rtype: Pet
-
-        """
-        logger.info("Processing lookup or 404 for id %s ...", customer_id)
-        return cls.query.get_or_404(customer_id)
-
-    @classmethod
-    def find_by_first_name(cls, first_name):
-        """Returns all Customers with the given first name
-
-        :param first_name: the first name of the Customers you want to match
-        :type first_name: str
-
-        :return: a collction of Customers with the given first name
-        :rtype: list
-        """
-        logger.info("Processing first name query for %s ...", first_name)
-        return cls.query.filter(cls.first_name == first_name)
-
-    @classmethod
-    def find_by_last_name(cls, last_name):
-        """Returns all Customers with the given last name
-
-        :param last_name: the last name of the Customers you want to match
-        :type last_name: str
-
-        :return: a collction of Customers with the given last name
-        :rtype: list
-        """
-        logger.info("Processing last name query for %s ...", last_name)
-        return cls.query.filter(cls.last_name == last_name)
-
-    @classmethod
-    def find_by_active(cls, active):
-        """Return all Customers that are active
-
-        :param active: True for customers that are active (not suspended)
-        :type active: boolean
-
-        :return: a collction of Customers that are active
-        :rtype: list
-        """
-
-        # TODO
-        pass
+    # @classmethod
+    # def all(cls):
+    #     """ Returns all of the Customers in the database """
+    #     logger.info("Processing all Customers")
+    #     return cls.query.all()

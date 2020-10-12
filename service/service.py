@@ -121,9 +121,9 @@ def index():
     )
 
 
-######################################################################
-# LIST ALL CUSTOMERS
-######################################################################
+# ######################################################################
+# # LIST ALL CUSTOMERS
+# ######################################################################
 @app.route("/customers", methods=["GET"])
 def list_customers():
     """ Returns all of the Customers """
@@ -131,64 +131,6 @@ def list_customers():
 
     # Note: query filtering would also be implemented in this function
     pass
-
-
-######################################################################
-# RETRIEVE A CUSTOMER
-######################################################################
-@app.route("/customers/<int:customer_id>", methods=["GET"])
-def get_customers(customer_id):
-    """
-    Retrieve a single Customer
-
-    This endpoint will return a Customer based on it's id
-    """
-    # TODO
-    pass
-
-
-######################################################################
-# ADD A NEW CUSTOMER
-######################################################################
-@app.route("/customers", methods=["POST"])
-def create_customers():
-    """
-    Creates a Customer
-    This endpoint will create a Customer based the data in the body that is posted
-    """
-    # TODO
-    pass
-
-
-######################################################################
-# UPDATE AN EXISTING CUSTOMER
-######################################################################
-@app.route("/customers/<int:customer_id>", methods=["PUT"])
-def update_customers(customer_id):
-    """
-    Update a Customer
-
-    This endpoint will update a Customer based the body that is posted
-    """
-    # TODO
-
-    # Note: the action of suspending a customer is also implemented in this function
-    pass
-
-
-######################################################################
-# DELETE A CUSTOMER
-######################################################################
-@app.route("/customers/<int:customer_id>", methods=["DELETE"])
-def delete_customers(customer_id):
-    """
-    Delete a Customer
-
-    This endpoint will delete a Customer based the id specified in the path
-    """
-    # TODO
-    pass
-
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
