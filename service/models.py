@@ -63,30 +63,6 @@ class Customer(db.Model):
             self.id,
         )
 
-    # def create(self):
-    #     """
-    #     Creates a Customer to the database
-    #     """
-    #     logger.info("Creating %s %s", self.first_name, self.last_name)
-    #     self.id = None  # id must be None to generate the next primary key
-    #     db.session.add(self)
-    #     db.session.commit()
-
-    # def update(self):
-    #     """
-    #     Updates a Customer to the database
-    #     """
-    #     logger.info("Saving %s %s", self.first_name, self.last_name)
-    #     if not self.id:
-    #         raise DataValidationError("Update called with empty ID field")
-    #     db.session.commit()
-
-    # def delete(self):
-    #     """ Removes a Customer from the data store """
-    #     logger.info("Deleting %s %s", self.first_name, self.last_name)
-    #     db.session.delete(self)
-    #     db.session.commit()
-
     def serialize(self):
         """ Serializes a Customer into a dictionary """
         return {
@@ -137,9 +113,3 @@ class Customer(db.Model):
         db.init_app(app)
         app.app_context().push()
         db.create_all()  # make our sqlalchemy tables
-
-    # @classmethod
-    # def all(cls):
-    #     """ Returns all of the Customers in the database """
-    #     logger.info("Processing all Customers")
-    #     return cls.query.all()
