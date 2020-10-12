@@ -46,7 +46,7 @@ class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(63))
     last_name = db.Column(db.String(63))
-    email = db.Column(db.String(63))
+    email = db.Column(db.String(127))
     address = db.Column(db.String(255))
     active = db.Column(db.Boolean())
 
