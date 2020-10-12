@@ -68,6 +68,7 @@ class Customer(db.Model):
         Creates a Customer to the database
         """
         logger.info("Creating %s %s", self.first_name, self.last_name)
+        self.id = None  # id must be None to generate the next primary key
         db.session.add(self)
         db.session.commit()
 
