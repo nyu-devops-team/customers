@@ -18,10 +18,10 @@ DATABASE_URI = os.getenv(
 )
 
 ######################################################################
-#  <your resource name>   M O D E L   T E S T   C A S E S
+#  C U S T O M E R   M O D E L   T E S T   C A S E S
 ######################################################################
-class TestYourResourceModel(unittest.TestCase):
-    """ Test Cases for <your resource name> Model """
+class TestCustomerModel(unittest.TestCase):
+    """ Test Cases for Customer Model """
 
     @classmethod
     def setUpClass(cls):
