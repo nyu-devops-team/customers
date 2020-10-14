@@ -113,3 +113,14 @@ class Customer(db.Model):
         db.init_app(app)
         app.app_context().push()
         db.create_all()  # make our sqlalchemy tables
+
+    @classmethod
+    def find(cls, customer_id: int):
+        """Finds a Customer by it's ID
+        :param customer_id: the id of the Customer to find
+        :type customer_id: int
+        :return: an instance with the customer_id, or None if not found
+        :rtype: Customer
+        """
+        cls.logger.info("Processing lookup for id %s ...", customer_id)
+        return cls.query.get(customer_id)

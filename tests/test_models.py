@@ -67,6 +67,8 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(customer.address, "123 Brooklyn Ave")
         self.assertEqual(customer.active, True)
 
+        return customer
+
     def test_serialize_a_customer(self):
         """ Test serialization of a a Customer """
         customer = Customer(
@@ -117,6 +119,26 @@ class TestCustomerModel(unittest.TestCase):
         data = "this is not a dictionary"
         customer = Customer()
         self.assertRaises(DataValidationError, customer.deserialize, data)
+
+    def test_find_customer(self):
+        """ Find a Customer by ID """
+        customer = Customer(
+            id=1,
+            first_name="bye",
+            last_name="yoyoyo",
+            email="yoyoyobye@gmail.com",
+            address="456 7th street, New York, NY, 10001",
+            active=True
+        )
+        db.session.add(customer)
+        result = Customer.find(customer.id)
+        self.assertIsNot(result, None)
+        self.assertEqual(result.id, customer.id)
+        self.assertEqual(result.first_name, "bye")
+        self.assertEqual(result.last_name, "world")
+        self.assertEqual(result.email, "helloworld2@gmail.com")
+        self.assertEqual(result.address, "456 7th street, New York, NY, 10001")
+        self.assertEqual(result.active, True)
 
 
 ######################################################################
