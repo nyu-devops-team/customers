@@ -39,6 +39,7 @@ If you make changes to the Vagrantfile after the virtual machine (VM) is already
 
 Install the necessary packages by running:
 ```shell
+    $ cd /vagrant
     $ pip install -r requirements.txt
 ```
 
