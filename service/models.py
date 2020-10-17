@@ -123,6 +123,12 @@ class Customer(db.Model):
         db.create_all()  # make our sqlalchemy tables
 
     @classmethod
+    def all(cls):
+        """Returns all of the customers in the database"""
+        cls.logger.info("Processing all of the customers...")
+        return cls.query.all()
+
+    @classmethod
     def find(cls, customer_id: int):
         """Finds a Customer by it's ID
         :param customer_id: the id of the Customer to find

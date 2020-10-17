@@ -67,6 +67,24 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(customer.address, "123 Brooklyn Ave")
         self.assertEqual(customer.active, True)
 
+    def test_add_a_customer(self):
+        """Create a customer and add it to the database"""
+        customers = Customer.all()
+        self.assertEqual(customers,[])
+        customer = Customer(
+            first_name="John",
+            last_name="Doe",
+            email="jdoe@gmail.com",
+            address="456 Bronx Ave",
+            active=True)
+        self.assertTrue(customer != None)
+        self.assertEqual(customer.id, None)
+        customer.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertEqual(customer.id,1)
+        customers = Customer.all()
+        self.assertEqual(len(customers),1)
+
     def test_serialize_a_customer(self):
         """ Test serialization of a a Customer """
         customer = Customer(
