@@ -135,8 +135,8 @@ class TestCustomerModel(unittest.TestCase):
         self.assertIsNot(result, None)
         self.assertEqual(result.id, customer.id)
         self.assertEqual(result.first_name, "bye")
-        self.assertEqual(result.last_name, "world")
-        self.assertEqual(result.email, "helloworld2@gmail.com")
+        self.assertEqual(result.last_name, "yoyoyo")
+        self.assertEqual(result.email, "yoyoyobye@gmail.com")
         self.assertEqual(result.address, "456 7th street, New York, NY, 10001")
         self.assertEqual(result.active, True)
 
