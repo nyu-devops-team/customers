@@ -192,6 +192,30 @@ def update_customers(customer_id):
     app.logger.info("Customer with ID [%s] updated.", customer.id)
     return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
 
+
+######################################################################
+# SUSPEND AN EXISTING CUSTOMER
+######################################################################
+@app.route("/customers/<int:customer_id>", methods=["PUT"])
+def suspend_customers(customer_id):
+    """
+    Suspend a Customer
+    This endpoint will Suspend a Customer
+    """
+    app.logger.info("Request to suspend customer with id: %s", customer_id)
+    check_content_type("application/json")
+    customer = Customer.find(customer_id)
+    if not customer:
+        raise NotFound("Customer with id '{}' was not found.".format(customer_id))
+    customer.deserialize(request.get_json())
+    customer.id = customer_id
+    customer.active = False
+    customer.suspend()
+
+    app.logger.info("Customer with ID [%s] suspended.", customer.id)
+    return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
+
+
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################

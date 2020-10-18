@@ -159,6 +159,27 @@ class TestCustomers(unittest.TestCase):
         updated_customer = resp.get_json()
         self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
+    def test_suspend_customer(self):
+        """ Suspend an existing Customer """
+        # create a customer to suspend
+        test_customer = CustomerFactory()
+        resp = self.app.post(
+            "/customers", json=test_customer.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # suspend the customer
+        new_customer = resp.get_json()
+        new_customer["active"] = False
+        resp = self.app.put(
+            "/customers/{}".format(new_customer["id"]),
+            json=new_customer,
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        suspended_customer = resp.get_json()
+        self.assertEqual(suspended_customer["active"], False)
+
 ######################################################################
 #   M A I N
 ######################################################################
