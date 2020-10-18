@@ -67,8 +67,6 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(customer.address, "123 Brooklyn Ave")
         self.assertEqual(customer.active, True)
 
-        return customer
-
     def test_update_a_customer(self):
         """ Update a Customer """
         customer = Customer(
@@ -89,7 +87,7 @@ class TestCustomerModel(unittest.TestCase):
         customers = Customer.all()
         self.assertEqual(len(customers), 1)
         self.assertEqual(customers[0].address, "Times Sq 42nd St")
-        
+
     def test_serialize_a_customer(self):
         """ Test serialization of a a Customer """
         customer = Customer(
