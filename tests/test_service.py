@@ -105,7 +105,7 @@ class TestCustomers(unittest.TestCase):
         for _ in range(count):
             test_customer = CustomerFactory()
             resp = self.app.post(
-                "/customers", json=test_pet.serialize(), content_type="application/json"
+                "/customers", json=test_customer.serialize(), content_type="application/json"
             )
             self.assertEqual(
                 resp.status_code, status.HTTP_201_CREATED, "Could not create test customer"
