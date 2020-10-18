@@ -69,6 +69,10 @@ class TestCustomerModel(unittest.TestCase):
 
         return customer
 
+    def test_add_a_pet(self):
+        """ Create a customer and add it to the database"""
+        pass
+
     def test_serialize_a_customer(self):
         """ Test serialization of a a Customer """
         customer = Customer(
