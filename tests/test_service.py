@@ -10,6 +10,7 @@ import logging
 import unittest
 from unittest.mock import MagicMock, patch
 from flask_api import status  # HTTP Status Codes
+from .customer_factory import CustomerFactory
 
 from service.models import db, Customer
 from service.service import app, init_db
@@ -97,6 +98,77 @@ class TestCustomers(unittest.TestCase):
         resp = self.app.get("/customers/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
+
+    def _create_customers(self, count):
+        """ Factory method to create pets in bulk """
+        customers = []
+        for _ in range(count):
+            test_customer = CustomerFactory()
+            resp = self.app.post(
+                "/customers", json=test_pet.serialize(), content_type="application/json"
+            )
+            self.assertEqual(
+                resp.status_code, status.HTTP_201_CREATED, "Could not create test customer"
+            )
+            new_customer = resp.get_json()
+            test_customer.id = new_customer["id"]
+            customers.append(test_customer)
+        return customers
+
+    def test_create_customer(self):
+        """ Create a new Customer """
+        test_customer = CustomerFactory()
+        resp = self.app.post(
+            "/customers", json=test_customer.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        # Make sure location header is set
+        location = resp.headers.get("Location", None)
+        self.assertTrue(location != None)
+        # Check the data is correct
+        new_customer = resp.get_json()
+        # self.assertEqual(new_customer["name"], test_customer.name, "Names do not match")
+        self.assertEqual(
+            new_customer["first_name"], test_customer.first_name, "first_name does not match"
+        )
+        self.assertEqual(
+            new_customer["last_name"], test_customer.last_name, "last_name does not match"
+        )
+        self.assertEqual(
+            new_customer["email"], test_customer.email, "email does not match"
+        )
+        self.assertEqual(
+            new_customer["address"], test_customer.address, "address does not match"
+        )
+        self.assertEqual(
+            new_customer["active"], test_customer.active, "active does not match"
+        )
+        # Check that the location header was correct
+        resp = self.app.get(location, content_type="application/json")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        new_customer = resp.get_json()
+        # self.assertEqual(new_customer["name"], test_pet.name, "Names do not match")
+        # self.assertEqual(
+        #     new_customer["category"], test_customer.category, "Categories do not match"
+        # )
+        # self.assertEqual(
+        #     new_customer["available"], test_customer.available, "Availability does not match"
+        # )
+        self.assertEqual(
+            new_customer["first_name"], test_customer.first_name, "first_name does not match"
+        )
+        self.assertEqual(
+            new_customer["last_name"], test_customer.last_name, "last_name does not match"
+        )
+        self.assertEqual(
+            new_customer["email"], test_customer.email, "email does not match"
+        )
+        self.assertEqual(
+            new_customer["address"], test_customer.address, "address does not match"
+        )
+        self.assertEqual(
+            new_customer["active"], test_customer.active, "active does not match"
+        )
 
 ######################################################################
 #   M A I N

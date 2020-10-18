@@ -152,6 +152,45 @@ def get_customer(customer_id):
     return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
 
 ######################################################################
+# RETRIEVE A PET
+######################################################################
+@app.route("/customers/<int:customer_id>", methods=["GET"])
+def get_customers(customer_id):
+    """
+    Retrieve a single Customer
+    This endpoint will return a Customer based on it's id
+    """
+    app.logger.info("Request for customer with id: %s", customer_id)
+    customer = Customer.find(customer_id)
+    if not customer:
+        raise NotFound("Customer with id '{}' was not found.".format(customer_id))
+
+    app.logger.info("Returning customer: %s", Customer.first_name)
+    return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
+
+######################################################################
+# ADD A NEW CUSTOMERS
+######################################################################
+@app.route("/customers", methods=["POST"])
+def create_customers():
+    """
+    Creates a Customer
+    This endpoint will create a Customer based the data in the body that is posted
+    """
+    app.logger.info("Request to create a customer")
+    check_content_type("application/json")
+    customer = Customer()
+    customer.deserialize(request.get_json())
+    customer.create()
+    message = customer.serialize()
+    location_url = url_for("get_customers", customer_id=customer.id, _external=True)
+
+    app.logger.info("Customer with ID [%s] created.", customer.id)
+    return make_response(
+        jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
+        )
+
+######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
 

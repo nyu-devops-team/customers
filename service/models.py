@@ -95,6 +95,14 @@ class Customer(db.Model):
             )
         return self
 
+
+    def create(self):
+        """
+        Creates a Customer to the data store
+        """
+        db.session.add(self)
+        db.session.commit()
+
     ##################################################
     # CLASS METHODS
     ##################################################
