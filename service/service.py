@@ -138,7 +138,7 @@ def list_customers():
 # RETRIEVE A CUSTOMER
 ######################################################################
 @app.route("/customers/<int:customer_id>", methods=["GET"])
-def get_customer(customer_id):
+def get_customers(customer_id):
     """
     Retrieve a single Customer
     This endpoint will return a Customer based on it's id
