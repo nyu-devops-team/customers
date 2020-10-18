@@ -103,6 +103,14 @@ class Customer(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def update(self):
+        """
+        Updates a Customer to the data store
+        """
+        if not self.id:
+            raise DataValidationError("Update called with empty ID field")
+        db.session.commit()
+
     ##################################################
     # CLASS METHODS
     ##################################################
@@ -121,6 +129,12 @@ class Customer(db.Model):
         db.init_app(app)
         app.app_context().push()
         db.create_all()  # make our sqlalchemy tables
+
+    @classmethod
+    def all(cls):
+        """ Returns all of the Pets in the database """
+        cls.logger.info("Processing all Pets")
+        return cls.query.all()
 
     @classmethod
     def find(cls, customer_id: int):

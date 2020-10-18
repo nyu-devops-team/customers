@@ -67,6 +67,27 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(customer.address, "123 Brooklyn Ave")
         self.assertEqual(customer.active, True)
 
+    def test_update_a_customer(self):
+        """ Update a Customer """
+        customer = Customer(
+            first_name="John", 
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+            )
+        customer.create()
+        self.assertEqual(customer.id, 1)
+        # Change it an update it
+        customer.address = "Times Sq 42nd St"
+        customer.update()
+        self.assertEqual(customer.id, 1)
+        # Fetch it back and make sure the id hasn't changed
+        # but the data did change
+        customers = Customer.all()
+        self.assertEqual(len(customers), 1)
+        self.assertEqual(customers[0].address, "Times Sq 42nd St")
+
     def test_serialize_a_customer(self):
         """ Test serialization of a a Customer """
         customer = Customer(

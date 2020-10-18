@@ -133,7 +133,7 @@ def list_customers():
     pass
 
 ######################################################################
-# RETRIEVE A PET
+# RETRIEVE A CUSTOMER
 ######################################################################
 @app.route("/customers/<int:customer_id>", methods=["GET"])
 def get_customers(customer_id):
@@ -170,6 +170,27 @@ def create_customers():
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
         )
+
+######################################################################
+# UPDATE AN EXISTING CUSTOMER
+######################################################################
+@app.route("/customers/<int:customer_id>", methods=["PUT"])
+def update_customers(customer_id):
+    """
+    Update a Customer
+    This endpoint will update a Customer based the body that is posted
+    """
+    app.logger.info("Request to update customer with id: %s", customer_id)
+    check_content_type("application/json")
+    customer = Customer.find(customer_id)
+    if not customer:
+        raise NotFound("Customer with id '{}' was not found.".format(customer_id))
+    customer.deserialize(request.get_json())
+    customer.id = customer_id
+    customer.update()
+
+    app.logger.info("Customer with ID [%s] updated.", customer.id)
+    return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
