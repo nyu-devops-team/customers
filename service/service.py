@@ -5,7 +5,7 @@ PATHS:
 ------
 GET /customers - returns a list of all the Customers
 GET /customers/{id} - returns the Customer with a given id number
-POST /customers - creates a new Customer record in teh database
+POST /customers - creates a new Customer record in the database
 PUT /customers/{id} - updates a Customer record in the database
 DELETE /customers/{id} - deletes a Customer record in the databse
 
