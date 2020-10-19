@@ -196,7 +196,7 @@ def update_customers(customer_id):
 ######################################################################
 # SUSPEND AN EXISTING CUSTOMER
 ######################################################################
-@app.route("/customers/<int:customer_id>", methods=["PUT"])
+@app.route("/customers/<int:customer_id>/suspend", methods=["PUT"])
 def suspend_customers(customer_id):
     """
     Suspend a Customer
@@ -208,9 +208,10 @@ def suspend_customers(customer_id):
     if not customer:
         raise NotFound("Customer with id '{}' was not found.".format(customer_id))
     customer.deserialize(request.get_json())
-    customer.id = customer_id
+    if customer.active == False:
+        raise PreconditionFailed("Customer with id '{}' was already suspended.".format(customer_id))
     customer.active = False
-    customer.suspend()
+    customer.update()
 
     app.logger.info("Customer with ID [%s] suspended.", customer.id)
     return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)

@@ -170,9 +170,8 @@ class TestCustomers(unittest.TestCase):
 
         # suspend the customer
         new_customer = resp.get_json()
-        new_customer["active"] = False
         resp = self.app.put(
-            "/customers/{}".format(new_customer["id"]),
+            "/customers/{}/suspend".format(new_customer["id"]),
             json=new_customer,
             content_type="application/json",
         )

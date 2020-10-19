@@ -111,14 +111,6 @@ class Customer(db.Model):
             raise DataValidationError("Update called with empty ID field")
         db.session.commit()
 
-    def suspend(self):
-        """
-        Suspends a Customer to the data store
-        """
-        if not self.id:
-            raise DataValidationError("Suspend called with empty ID field")
-        db.session.commit()
-
     ##################################################
     # CLASS METHODS
     ##################################################
