@@ -199,6 +199,24 @@ def update_customers(customer_id):
     return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
 
 ######################################################################
+# DELETE AN EXISTING CUSTOMER
+######################################################################
+@app.route("/customers/<int:customer_id>", methods=["DELETE"])
+def delete_customers(customer_id):
+    """
+    Delete a Customer
+    This endpoint will delete a customer based on the ID specified in the path
+    """
+    app.logger.info("Request to delete a customer with ID: %s", customer_id)
+    customer = Customer.find(customer_id)
+    if customer:
+        customer.delete()
+
+    app.logger.info("Customer with ID [%s] has been deleted.", customer_id)
+    return make_response("", status.HTTP_204_NO_CONTENT)
+
+
+######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
 
