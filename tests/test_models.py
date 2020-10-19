@@ -118,6 +118,13 @@ class TestCustomerModel(unittest.TestCase):
         
     def test_suspend_a_customer(self):
         """ Suspend a Customer """
+        customer = Customer(
+            first_name="John", 
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+            )
         customer.create()
         self.assertEqual(customer.id, 1)
         # Change it and suspend it
