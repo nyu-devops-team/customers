@@ -140,8 +140,8 @@ class Customer(db.Model):
 
     @classmethod
     def all(cls):
-        """ Returns all of the Pets in the database """
-        cls.logger.info("Processing all Pets")
+        """Returns all of the customers in the database"""
+        cls.logger.info("Processing all of the customers...")
         return cls.query.all()
 
     @classmethod

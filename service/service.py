@@ -121,17 +121,20 @@ def index():
         status.HTTP_200_OK,
     )
 
-
 # ######################################################################
 # # LIST ALL CUSTOMERS
 # ######################################################################
 @app.route("/customers", methods=["GET"])
 def list_customers():
     """ Returns all of the Customers """
-    # TODO
+    app.logger.info("Request to list all customers")
+    customers = []
+    customers = Customer.all()
 
+    results = [customer.serialize() for customer in customers]
+    app.logger.info("Returning %d pets", len(results))
+    return make_response(jsonify(results), status.HTTP_200_OK)
     # Note: query filtering would also be implemented in this function
-    pass
 
 
 ######################################################################
