@@ -200,6 +200,7 @@ class TestCustomers(unittest.TestCase):
         updated_customer = resp.get_json()
         self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
+<<<<<<< HEAD
     def test_delete_a_customer(self):
         """ Delete a Customer """
         test_customer = self._create_customers(1)[0]
@@ -214,6 +215,43 @@ class TestCustomers(unittest.TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
+=======
+    def test_suspend_customer(self):
+        """ Suspend an existing Customer """
+        # create a customer to suspend
+        test_customer = CustomerFactory()
+        resp = self.app.post(
+            "/customers", json=test_customer.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # suspend the customer
+        new_customer = resp.get_json()
+        resp = self.app.put(
+            "/customers/{}/suspend".format(new_customer["id"]),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        suspended_customer = resp.get_json()
+        self.assertEqual(suspended_customer["active"], False)
+
+        # attempt to resuspend the customer
+        resp2 = self.app.put(
+            "/customers/{}/suspend".format(suspended_customer["id"]),
+            content_type="application/json",
+        )
+        self.assertEqual(resp2.status_code, status.HTTP_412_PRECONDITION_FAILED)
+
+    def test_suspend_not_available(self):
+        """ Suspend a customer that is not available """
+        resp = self.app.put(
+            "/customers/{}/suspend".format(0),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+
+>>>>>>> master
 ######################################################################
 #   M A I N
 ######################################################################

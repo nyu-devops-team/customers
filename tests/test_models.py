@@ -131,6 +131,27 @@ class TestCustomerModel(unittest.TestCase):
             )
         self.assertRaises(DataValidationError, customer.update)
         
+    def test_suspend_a_customer(self):
+        """ Suspend a Customer """
+        customer = Customer(
+            first_name="John", 
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+            )
+        customer.create()
+        self.assertEqual(customer.id, 1)
+        # Change it and suspend it
+        customer.active = False
+        customer.update()
+        self.assertEqual(customer.id, 1)
+        # Fetch it back and make sure the id hasn't changed
+        # but the data did change
+        customers = Customer.all()
+        self.assertEqual(len(customers), 1)
+        self.assertEqual(customers[0].active, False)
+        
     def test_repr(self):
         customer = Customer()
         self.assertEqual(repr(customer), "<Customer> None None id = [None]>")

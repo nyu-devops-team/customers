@@ -5,7 +5,7 @@ PATHS:
 ------
 GET /customers - returns a list of all the Customers
 GET /customers/{id} - returns the Customer with a given id number
-POST /customers - creates a new Customer record in teh database
+POST /customers - creates a new Customer record in the database
 PUT /customers/{id} - updates a Customer record in the database
 DELETE /customers/{id} - deletes a Customer record in the databse
 
@@ -18,7 +18,7 @@ import sys
 import logging
 from flask import Flask, jsonify, request, url_for, make_response, abort
 from flask_api import status  # HTTP Status Codes
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, PreconditionFailed
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
@@ -197,6 +197,30 @@ def update_customers(customer_id):
 
     app.logger.info("Customer with ID [%s] updated.", customer.id)
     return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
+
+
+######################################################################
+# SUSPEND AN EXISTING CUSTOMER
+######################################################################
+@app.route("/customers/<int:customer_id>/suspend", methods=["PUT"])
+def suspend_customers(customer_id):
+    """
+    Suspend a Customer
+    This endpoint will Suspend a Customer
+    """
+    app.logger.info("Request to suspend customer with id: %s", customer_id)
+    check_content_type("application/json")
+    customer = Customer.find(customer_id)
+    if not customer:
+        raise NotFound("Customer with id '{}' was not found.".format(customer_id))
+    if not customer.active:
+        raise PreconditionFailed("Customer with id '{}' was already suspended.".format(customer_id))
+    customer.active = False
+    customer.update()
+
+    app.logger.info("Customer with ID [%s] suspended.", customer.id)
+    return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
+
 
 ######################################################################
 # DELETE AN EXISTING CUSTOMER
