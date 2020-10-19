@@ -88,6 +88,29 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(len(customers), 1)
         self.assertEqual(customers[0].address, "Times Sq 42nd St")
 
+    def test_bad_update(self):
+        customer = Customer(
+            first_name="John", 
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+            )
+        self.assertRaises(DataValidationError, customer.update)
+        
+    def test_repr(self):
+        customer = Customer()
+        self.assertEqual(repr(customer), "<Customer> None None id = [None]>")
+
+        customer2 = Customer(
+            first_name="John",
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+        )
+        self.assertEqual(repr(customer2), "<Customer> 'John' 'Smith' id = [None]>")
+
     def test_serialize_a_customer(self):
         """ Test serialization of a a Customer """
         customer = Customer(
@@ -97,7 +120,7 @@ class TestCustomerModel(unittest.TestCase):
             address="123 Brooklyn Ave",
             active=True,
         )
-        data= customer.serialize()
+        data = customer.serialize()
 
         self.assertNotEqual(data, None)
         self.assertIn("id", data)
@@ -138,6 +161,14 @@ class TestCustomerModel(unittest.TestCase):
         data = "this is not a dictionary"
         customer = Customer()
         self.assertRaises(DataValidationError, customer.deserialize, data)
+
+        customer2 = Customer()
+        data2 = {"id": 1, 
+                "first_name": "John", 
+                "last_name": "Smith",
+                "address": "123 Brooklyn Ave",
+                "active": True}
+        self.assertRaises(DataValidationError, customer2.deserialize, data2)
 
     def test_find_customer(self):
         """ Find a Customer by ID """
