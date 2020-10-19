@@ -18,6 +18,7 @@ import sys
 import logging
 from flask import Flask, jsonify, request, url_for, make_response, abort
 from flask_api import status  # HTTP Status Codes
+from werkzeug.exceptions import NotFound
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
@@ -135,6 +136,7 @@ def list_customers():
     return make_response(jsonify(results), status.HTTP_200_OK)
     # Note: query filtering would also be implemented in this function
 
+
 ######################################################################
 # RETRIEVE A CUSTOMER
 ######################################################################
@@ -149,8 +151,9 @@ def get_customers(customer_id):
     if not customer:
         raise NotFound("Customer with id '{}' was not found.".format(customer_id))
 
-    app.logger.info("Returning customer: %s", Customer.first_name)
+    app.logger.info("Returning customer: %s", customer.first_name + " " + customer.last_name)
     return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
+
 
 ######################################################################
 # ADD A NEW CUSTOMERS
@@ -173,6 +176,27 @@ def create_customers():
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
         )
+
+######################################################################
+# UPDATE AN EXISTING CUSTOMER
+######################################################################
+@app.route("/customers/<int:customer_id>", methods=["PUT"])
+def update_customers(customer_id):
+    """
+    Update a Customer
+    This endpoint will update a Customer based the body that is posted
+    """
+    app.logger.info("Request to update customer with id: %s", customer_id)
+    check_content_type("application/json")
+    customer = Customer.find(customer_id)
+    if not customer:
+        raise NotFound("Customer with id '{}' was not found.".format(customer_id))
+    customer.deserialize(request.get_json())
+    customer.id = customer_id
+    customer.update()
+
+    app.logger.info("Customer with ID [%s] updated.", customer.id)
+    return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S

@@ -84,6 +84,27 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(customer.id,1)
         customers = Customer.all()
         self.assertEqual(len(customers),1)
+        
+    def test_update_a_customer(self):
+        """ Update a Customer """
+        customer = Customer(
+            first_name="John", 
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+            )
+        customer.create()
+        self.assertEqual(customer.id, 1)
+        # Change it an update it
+        customer.address = "Times Sq 42nd St"
+        customer.update()
+        self.assertEqual(customer.id, 1)
+        # Fetch it back and make sure the id hasn't changed
+        # but the data did change
+        customers = Customer.all()
+        self.assertEqual(len(customers), 1)
+        self.assertEqual(customers[0].address, "Times Sq 42nd St")
 
     def test_serialize_a_customer(self):
         """ Test serialization of a a Customer """
@@ -135,6 +156,26 @@ class TestCustomerModel(unittest.TestCase):
         data = "this is not a dictionary"
         customer = Customer()
         self.assertRaises(DataValidationError, customer.deserialize, data)
+
+    def test_find_customer(self):
+        """ Find a Customer by ID """
+        customer = Customer(
+            id=1,
+            first_name="bye",
+            last_name="yoyoyo",
+            email="yoyoyobye@gmail.com",
+            address="456 7th street, New York, NY, 10001",
+            active=True
+        )
+        db.session.add(customer)
+        result = Customer.find(customer.id)
+        self.assertIsNot(result, None)
+        self.assertEqual(result.id, customer.id)
+        self.assertEqual(result.first_name, "bye")
+        self.assertEqual(result.last_name, "yoyoyo")
+        self.assertEqual(result.email, "yoyoyobye@gmail.com")
+        self.assertEqual(result.address, "456 7th street, New York, NY, 10001")
+        self.assertEqual(result.active, True)
 
 
 ######################################################################

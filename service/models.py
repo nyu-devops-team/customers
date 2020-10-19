@@ -103,6 +103,14 @@ class Customer(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def update(self):
+        """
+        Updates a Customer to the data store
+        """
+        if not self.id:
+            raise DataValidationError("Update called with empty ID field")
+        db.session.commit()
+
     ##################################################
     # CLASS METHODS
     ##################################################

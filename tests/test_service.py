@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 from flask_api import status  # HTTP Status Codes
 from .customer_factory import CustomerFactory
 
-from service.models import db
+from service.models import db, Customer
 from service.service import app, init_db
 
 # Disable all but ciritcal erros suirng unittest
@@ -55,6 +55,22 @@ class TestCustomers(unittest.TestCase):
         db.session.remove()
         db.drop_all()
 
+    def _create_customers(self, count):
+        """ Create customers in bulk """
+        customers = []
+        for i in range(count):
+            temp = Customer(
+                id=i,
+                first_name="bye",
+                last_name="world",
+                email="helloworld2@gmail.com",
+                address="456 7th street, New York, NY, 10001",
+                active=True
+            )
+            db.session.add(temp)
+            customers.append(temp)
+        return customers
+
     ######################################################################
     #  P L A C E   T E S T   C A S E S   H E R E
     ######################################################################
@@ -73,6 +89,23 @@ class TestCustomers(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(len(data),3)
+        
+    def test_get_customer(self):
+        """ Get a single Customer """
+        # get the id of a customer
+        test_customer = self._create_customers(1)[0]
+        resp = self.app.get(
+            "/customers/{}".format(test_customer.id), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["last_name"], test_customer.last_name)
+
+    def test_get_customer_not_found(self):
+        """ Get a Customer thats not found """
+        resp = self.app.get("/customers/0")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
 
     def _create_customers(self, count):
         """ Factory method to create customers in bulk """
@@ -146,6 +179,26 @@ class TestCustomers(unittest.TestCase):
         )
 
 
+    def test_update_customer(self):
+        """ Update an existing Customer """
+        # create a customer to update
+        test_customer = CustomerFactory()
+        resp = self.app.post(
+            "/customers", json=test_customer.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # update the customer
+        new_customer = resp.get_json()
+        new_customer["address"] = "2014 Forest Hills Drive"
+        resp = self.app.put(
+            "/customers/{}".format(new_customer["id"]),
+            json=new_customer,
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_customer = resp.get_json()
+        self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
 ######################################################################
 #   M A I N
