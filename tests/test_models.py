@@ -67,6 +67,24 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(customer.address, "123 Brooklyn Ave")
         self.assertEqual(customer.active, True)
 
+    def test_add_a_customer(self):
+        """Create a customer and add it to the database"""
+        customers = Customer.all()
+        self.assertEqual(customers,[])
+        customer = Customer(
+            first_name="John",
+            last_name="Doe",
+            email="jdoe@gmail.com",
+            address="456 Bronx Ave",
+            active=True)
+        self.assertTrue(customer != None)
+        self.assertEqual(customer.id, None)
+        customer.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertEqual(customer.id,1)
+        customers = Customer.all()
+        self.assertEqual(len(customers),1)
+        
     def test_update_a_customer(self):
         """ Update a Customer """
         customer = Customer(
@@ -88,6 +106,49 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(len(customers), 1)
         self.assertEqual(customers[0].address, "Times Sq 42nd St")
 
+    def test_bad_update(self):
+        customer = Customer(
+            first_name="John", 
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+            )
+        self.assertRaises(DataValidationError, customer.update)
+        
+    def test_suspend_a_customer(self):
+        """ Suspend a Customer """
+        customer = Customer(
+            first_name="John", 
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+            )
+        customer.create()
+        self.assertEqual(customer.id, 1)
+        # Change it and suspend it
+        customer.active = False
+        customer.update()
+        self.assertEqual(customer.id, 1)
+        # Fetch it back and make sure the id hasn't changed
+        # but the data did change
+        customers = Customer.all()
+        self.assertEqual(len(customers), 1)
+        self.assertEqual(customers[0].active, False)
+        
+    def test_repr(self):
+        customer = Customer()
+        self.assertEqual(repr(customer), "<Customer> None None id = [None]>")
+
+        customer2 = Customer(
+            first_name="John",
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+        )
+        self.assertEqual(repr(customer2), "<Customer> 'John' 'Smith' id = [None]>")
 
     def test_serialize_a_customer(self):
         """ Test serialization of a a Customer """
@@ -98,7 +159,7 @@ class TestCustomerModel(unittest.TestCase):
             address="123 Brooklyn Ave",
             active=True,
         )
-        data= customer.serialize()
+        data = customer.serialize()
 
         self.assertNotEqual(data, None)
         self.assertIn("id", data)
@@ -139,6 +200,34 @@ class TestCustomerModel(unittest.TestCase):
         data = "this is not a dictionary"
         customer = Customer()
         self.assertRaises(DataValidationError, customer.deserialize, data)
+
+        customer2 = Customer()
+        data2 = {"id": 1, 
+                "first_name": "John", 
+                "last_name": "Smith",
+                "address": "123 Brooklyn Ave",
+                "active": True}
+        self.assertRaises(DataValidationError, customer2.deserialize, data2)
+
+    def test_find_customer(self):
+        """ Find a Customer by ID """
+        customer = Customer(
+            id=1,
+            first_name="bye",
+            last_name="yoyoyo",
+            email="yoyoyobye@gmail.com",
+            address="456 7th street, New York, NY, 10001",
+            active=True
+        )
+        db.session.add(customer)
+        result = Customer.find(customer.id)
+        self.assertIsNot(result, None)
+        self.assertEqual(result.id, customer.id)
+        self.assertEqual(result.first_name, "bye")
+        self.assertEqual(result.last_name, "yoyoyo")
+        self.assertEqual(result.email, "yoyoyobye@gmail.com")
+        self.assertEqual(result.address, "456 7th street, New York, NY, 10001")
+        self.assertEqual(result.active, True)
 
 
 ######################################################################
