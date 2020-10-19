@@ -82,6 +82,14 @@ class TestCustomers(unittest.TestCase):
         data = resp.get_json()
         self.assertEqual(data["name"], "Customer REST API Service")
 
+    def test_get_customer_list(self):
+        """Get a list of Customers"""
+        self._create_customers(3)
+        resp = self.app.get("/customers")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data),3)
+        
     def test_get_customer(self):
         """ Get a single Customer """
         # get the id of a customer
@@ -100,12 +108,12 @@ class TestCustomers(unittest.TestCase):
 
 
     def _create_customers(self, count):
-        """ Factory method to create pets in bulk """
+        """ Factory method to create customers in bulk """
         customers = []
         for _ in range(count):
             test_customer = CustomerFactory()
             resp = self.app.post(
-                "/customers", json=test_pet.serialize(), content_type="application/json"
+                "/customers", json=test_customer.serialize(), content_type="application/json"
             )
             self.assertEqual(
                 resp.status_code, status.HTTP_201_CREATED, "Could not create test customer"
@@ -147,7 +155,7 @@ class TestCustomers(unittest.TestCase):
         resp = self.app.get(location, content_type="application/json")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         new_customer = resp.get_json()
-        # self.assertEqual(new_customer["name"], test_pet.name, "Names do not match")
+        # self.assertEqual(new_customer["name"], test_customer.name, "Names do not match")
         # self.assertEqual(
         #     new_customer["category"], test_customer.category, "Categories do not match"
         # )
@@ -169,6 +177,28 @@ class TestCustomers(unittest.TestCase):
         self.assertEqual(
             new_customer["active"], test_customer.active, "active does not match"
         )
+
+
+    def test_update_customer(self):
+        """ Update an existing Customer """
+        # create a customer to update
+        test_customer = CustomerFactory()
+        resp = self.app.post(
+            "/customers", json=test_customer.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # update the customer
+        new_customer = resp.get_json()
+        new_customer["address"] = "2014 Forest Hills Drive"
+        resp = self.app.put(
+            "/customers/{}".format(new_customer["id"]),
+            json=new_customer,
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_customer = resp.get_json()
+        self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
 ######################################################################
 #   M A I N

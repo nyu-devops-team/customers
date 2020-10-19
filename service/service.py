@@ -32,13 +32,13 @@ from . import app
 # Error Handlers
 ######################################################################
 @app.errorhandler(DataValidationError)
-def request_validation_error(error):
+def request_validation_error(error):   # pragma: no cover
     """ Handles Value Errors from bad data """
     return bad_request(error)
 
 
 @app.errorhandler(status.HTTP_400_BAD_REQUEST)
-def bad_request(error):
+def bad_request(error):   # pragma: no cover
     """ Handles bad reuests with 400_BAD_REQUEST """
     app.logger.warning(str(error))
     return (
@@ -62,10 +62,10 @@ def not_found(error):
 
 
 @app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)
-def method_not_supported(error):
+def method_not_supported(error):    # pragma: no cover
     """ Handles unsuppoted HTTP methods with 405_METHOD_NOT_SUPPORTED """
-    app.logger.warning(str(error))
-    return (
+    app.logger.warning(str(error)) 
+    return (   
         jsonify(
             status=status.HTTP_405_METHOD_NOT_ALLOWED,
             error="Method not Allowed",
@@ -76,10 +76,10 @@ def method_not_supported(error):
 
 
 @app.errorhandler(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-def mediatype_not_supported(error):
+def mediatype_not_supported(error):   # pragma: no cover
     """ Handles unsuppoted media requests with 415_UNSUPPORTED_MEDIA_TYPE """
-    app.logger.warning(str(error))
-    return (
+    app.logger.warning(str(error))  
+    return (   
         jsonify(
             status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             error="Unsupported media type",
@@ -90,7 +90,7 @@ def mediatype_not_supported(error):
 
 
 @app.errorhandler(status.HTTP_500_INTERNAL_SERVER_ERROR)
-def internal_server_error(error):
+def internal_server_error(error):   # pragma: no cover
     """ Handles unexpected server error with 500_SERVER_ERROR """
     app.logger.error(str(error))
     return (
@@ -121,38 +121,24 @@ def index():
         status.HTTP_200_OK,
     )
 
-
 # ######################################################################
 # # LIST ALL CUSTOMERS
 # ######################################################################
 @app.route("/customers", methods=["GET"])
 def list_customers():
     """ Returns all of the Customers """
-    # TODO
+    app.logger.info("Request to list all customers")
+    customers = []
+    customers = Customer.all()
 
+    results = [customer.serialize() for customer in customers]
+    app.logger.info("Returning %d pets", len(results))
+    return make_response(jsonify(results), status.HTTP_200_OK)
     # Note: query filtering would also be implemented in this function
-    pass
 
 
 ######################################################################
 # RETRIEVE A CUSTOMER
-######################################################################
-@app.route("/customers/<int:customer_id>", methods=["GET"])
-def get_customer(customer_id):
-    """
-    Retrieve a single Customer
-    This endpoint will return a Customer based on it's id
-    """
-    app.logger.info("Request for customer with id: %s", customer_id)
-    customer = Customer.find(customer_id)
-    if not customer:
-        raise NotFound("Customer with id '{}' was not found.".format(customer_id))
-
-    app.logger.info("Returning customer: %s", customer.first_name + " " + customer.last_name)
-    return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
-
-######################################################################
-# RETRIEVE A PET
 ######################################################################
 @app.route("/customers/<int:customer_id>", methods=["GET"])
 def get_customers(customer_id):
@@ -165,8 +151,9 @@ def get_customers(customer_id):
     if not customer:
         raise NotFound("Customer with id '{}' was not found.".format(customer_id))
 
-    app.logger.info("Returning customer: %s", Customer.first_name)
+    app.logger.info("Returning customer: %s", customer.first_name + " " + customer.last_name)
     return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
+
 
 ######################################################################
 # ADD A NEW CUSTOMERS
@@ -191,6 +178,27 @@ def create_customers():
         )
 
 ######################################################################
+# UPDATE AN EXISTING CUSTOMER
+######################################################################
+@app.route("/customers/<int:customer_id>", methods=["PUT"])
+def update_customers(customer_id):
+    """
+    Update a Customer
+    This endpoint will update a Customer based the body that is posted
+    """
+    app.logger.info("Request to update customer with id: %s", customer_id)
+    check_content_type("application/json")
+    customer = Customer.find(customer_id)
+    if not customer:
+        raise NotFound("Customer with id '{}' was not found.".format(customer_id))
+    customer.deserialize(request.get_json())
+    customer.id = customer_id
+    customer.update()
+
+    app.logger.info("Customer with ID [%s] updated.", customer.id)
+    return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
+
+######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
 
@@ -201,7 +209,7 @@ def init_db():
     Customer.init_db(app)
 
 
-def check_content_type(content_type):
+def check_content_type(content_type):   # pragma: no cover
     """ Checks that the media type is correct """
     if request.headers["Content-Type"] == content_type:
         return
