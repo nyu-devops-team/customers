@@ -62,10 +62,10 @@ def not_found(error):
 
 
 @app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)
-def method_not_supported(error):
+def method_not_supported(error):    # pragma: no cover
     """ Handles unsuppoted HTTP methods with 405_METHOD_NOT_SUPPORTED """
-    app.logger.warning(str(error))
-    return (
+    app.logger.warning(str(error)) 
+    return (   
         jsonify(
             status=status.HTTP_405_METHOD_NOT_ALLOWED,
             error="Method not Allowed",
@@ -76,10 +76,10 @@ def method_not_supported(error):
 
 
 @app.errorhandler(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-def mediatype_not_supported(error):   # pragra: no cover
+def mediatype_not_supported(error):   # pragma: no cover
     """ Handles unsuppoted media requests with 415_UNSUPPORTED_MEDIA_TYPE """
-    app.logger.warning(str(error))
-    return (
+    app.logger.warning(str(error))  
+    return (   
         jsonify(
             status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             error="Unsupported media type",
@@ -206,9 +206,9 @@ def init_db():
     Customer.init_db(app)
 
 
-def check_content_type(content_type):
+def check_content_type(content_type):   # pragma: no cover
     """ Checks that the media type is correct """
-    if request.headers["Content-Type"] == content_type:  # pragma: no cover
+    if request.headers["Content-Type"] == content_type:
         return
     app.logger.error("Invalid Content-Type: %s", request.headers["Content-Type"])
     abort(415, "Content-Type must be {}".format(content_type))
