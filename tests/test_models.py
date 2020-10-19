@@ -87,6 +87,16 @@ class TestCustomerModel(unittest.TestCase):
         customers = Customer.all()
         self.assertEqual(len(customers), 1)
         self.assertEqual(customers[0].address, "Times Sq 42nd St")
+
+    def test_bad_update(self):
+        customer = Customer(
+            first_name="John", 
+            last_name="Smith",
+            email="jsmith@gmail.com",
+            address="123 Brooklyn Ave",
+            active=True,
+            )
+        self.assertRaises(DataValidationError, customer.update)
         
     def test_repr(self):
         customer = Customer()
