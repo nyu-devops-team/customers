@@ -200,6 +200,41 @@ class TestCustomers(unittest.TestCase):
         updated_customer = resp.get_json()
         self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
+    def test_suspend_customer(self):
+        """ Suspend an existing Customer """
+        # create a customer to suspend
+        test_customer = CustomerFactory()
+        resp = self.app.post(
+            "/customers", json=test_customer.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # suspend the customer
+        new_customer = resp.get_json()
+        resp = self.app.put(
+            "/customers/{}/suspend".format(new_customer["id"]),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        suspended_customer = resp.get_json()
+        self.assertEqual(suspended_customer["active"], False)
+
+        # attempt to resuspend the customer
+        resp2 = self.app.put(
+            "/customers/{}/suspend".format(suspended_customer["id"]),
+            content_type="application/json",
+        )
+        self.assertEqual(resp2.status_code, status.HTTP_412_PRECONDITION_FAILED)
+
+    def test_suspend_not_available(self):
+        """ Suspend a customer that is not available """
+        resp = self.app.put(
+            "/customers/{}/suspend".format(0),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+
 ######################################################################
 #   M A I N
 ######################################################################
