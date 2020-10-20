@@ -146,3 +146,59 @@ class Customer(db.Model):
         """
         cls.logger.info("Processing lookup for id %s ...", customer_id)
         return cls.query.get(customer_id)
+
+    @classmethod
+    def find_by_first_name(cls, first_name: str):
+        """Returns all Customers with the given first name
+        :param first_name: the first name of the Customers you want to match
+        :type name: str
+        :return: a collection of Customers with that first name
+        :rtype: list
+        """
+        cls.logger.info("Processing first name query for %s ...", first_name)
+        return cls.query.filter(cls.first_name == first_name)
+
+    @classmethod
+    def find_by_last_name(cls, last_name: str):
+        """Returns all Customers with the given last name
+        :param last_name: the last name of the Customers you want to match
+        :type name: str
+        :return: a collection of Customers with that last name
+        :rtype: list
+        """
+        cls.logger.info("Processing last name query for %s ...", last_name)
+        return cls.query.filter(cls.last_name == last_name)
+
+
+    @classmethod
+    def find_by_address(cls, address: str):
+        """Returns all of the Customers in an address
+        :param category: the address of the Customers you want to match
+        :type category: str
+        :return: a collection of Customers in that category
+        :rtype: list
+        """
+        cls.logger.info("Processing address query for %s ...", address)
+        return cls.query.filter(cls.address == address)
+        
+    @classmethod
+    def find_by_email(cls, email: str):
+        """Returns all of the Customers with a given email
+        :param category: the email of the Customers you want to match
+        :type category: str
+        :return: a collection of Customers in that category
+        :rtype: list
+        """
+        cls.logger.info("Processing address query for %s ...", email)
+        return cls.query.filter(cls.email == email)
+
+    @classmethod
+    def find_by_active(cls, active: bool = True):
+        """Returns all Custom by their active status
+        :param available: True for Customers that are active
+        :type available: str
+        :return: a collection of Customers that are active
+        :rtype: list
+        """
+        cls.logger.info("Processing active query for %s ...", active)
+        return cls.query.filter(cls.active == active)

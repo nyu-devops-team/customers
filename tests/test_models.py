@@ -229,6 +229,60 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(result.address, "456 7th street, New York, NY, 10001")
         self.assertEqual(result.active, True)
 
+    def test_find_by_email(self):
+        """ Find a Customer by email """
+        Customer(first_name="Some", last_name="Dude",email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice",active=True).create()
+        Customer(first_name="P", last_name="Sherman",email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya",active=False).create()
+        customers = Customer.find_by_email(email="dory@findingnemo.com")
+        self.assertEqual(customers[0].email, "dory@findingnemo.com")
+        self.assertEqual(customers[0].first_name, "P")
+        self.assertEqual(customers[0].last_name, "Sherman")
+        self.assertEqual(customers[0].address, "42, Wallaby Way, Sydney, 'Straya")
+        self.assertEqual(customers[0].active, False)
+
+    def test_find_by_active(self):
+        """ Find a Customer by email """
+        Customer(first_name="Some", last_name="Dude",email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice",active=True).create()
+        Customer(first_name="P", last_name="Sherman",email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya",active=False).create()
+        customers = Customer.find_by_active(active=False)
+        self.assertEqual(customers[0].email, "dory@findingnemo.com")
+        self.assertEqual(customers[0].first_name, "P")
+        self.assertEqual(customers[0].last_name, "Sherman")
+        self.assertEqual(customers[0].address, "42, Wallaby Way, Sydney, 'Straya")
+        self.assertEqual(customers[0].active, False)
+
+    def test_find_by_address(self):
+        """ Find a Customer by address """
+        Customer(first_name="Some", last_name="Dude",email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice",active=True).create()
+        Customer(first_name="P", last_name="Sherman",email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya",active=False).create()
+        customers = Customer.find_by_address(address="42, Wallaby Way, Sydney, 'Straya")
+        self.assertEqual(customers[0].email, "dory@findingnemo.com")
+        self.assertEqual(customers[0].first_name, "P")
+        self.assertEqual(customers[0].last_name, "Sherman")
+        self.assertEqual(customers[0].address, "42, Wallaby Way, Sydney, 'Straya")
+        self.assertEqual(customers[0].active, False)
+
+    def test_find_by_first_name(self):
+        """ Find a Customer by first name """
+        Customer(first_name="Some", last_name="Dude",email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice",active=True).create()
+        Customer(first_name="P", last_name="Sherman",email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya",active=False).create()
+        customers = Customer.find_by_first_name(first_name="P")
+        self.assertEqual(customers[0].email, "dory@findingnemo.com")
+        self.assertEqual(customers[0].first_name, "P")
+        self.assertEqual(customers[0].last_name, "Sherman")
+        self.assertEqual(customers[0].address, "42, Wallaby Way, Sydney, 'Straya")
+        self.assertEqual(customers[0].active, False)
+
+    def test_find_by_last_name(self):
+        """ Find a Customer by last name """
+        Customer(first_name="Some", last_name="Dude",email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice",active=True).create()
+        Customer(first_name="P", last_name="Sherman",email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya",active=False).create()
+        customers = Customer.find_by_last_name(last_name="Sherman")
+        self.assertEqual(customers[0].email, "dory@findingnemo.com")
+        self.assertEqual(customers[0].first_name, "P")
+        self.assertEqual(customers[0].last_name, "Sherman")
+        self.assertEqual(customers[0].address, "42, Wallaby Way, Sydney, 'Straya")
+        self.assertEqual(customers[0].active, False)
 
 ######################################################################
 #   M A I N
