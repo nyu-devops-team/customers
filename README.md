@@ -20,6 +20,13 @@ The customers resource is a representation of the customer accounts of the eComm
 | address | String | Customer's address
 | active | Boolean | Is customer's account active
 
+### Queries Supported
+Filter by:
+ - First Name
+ - Last Name
+ - Email
+ - Address
+ - Active Status
 ## Prerequisite Installation using Vagrant
 
 The easiest way to setup the environment is with Vagrant and VirtualBox. if you don't have this software the first step is down download and install it.
@@ -99,6 +106,12 @@ You can also manually run `nosetests` with `coverage` (but `setup.cfg` does this
 ```
 
 Try and get as close to 100% coverage as you can.
+
+You can also manually run `nosetests` with the `s` flag to spit out debug print statements even when all test cases pass
+
+```shell
+    $ nosetests -s
+```
 
 It's also a good idea to make sure that your Python code follows the PEP8 standard. `flake8` has been included in the `requirements.txt` file so that you can check if your code is compliant like this:
 
