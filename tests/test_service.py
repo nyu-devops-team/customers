@@ -218,6 +218,7 @@ class TestCustomers(unittest.TestCase):
         """ Suspend an existing Customer """
         # create a customer to suspend
         test_customer = CustomerFactory()
+        test_customer.active = 1
         resp = self.app.post(
             "/customers", json=test_customer.serialize(), content_type="application/json"
         )
@@ -230,10 +231,10 @@ class TestCustomers(unittest.TestCase):
             content_type="application/json",
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        
+        # attempt to resuspend the customer
         suspended_customer = resp.get_json()
         self.assertEqual(suspended_customer["active"], False)
-
-        # attempt to resuspend the customer
         resp2 = self.app.put(
             "/customers/{}/suspend".format(suspended_customer["id"]),
             content_type="application/json",
