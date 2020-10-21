@@ -6,7 +6,7 @@ Test cases can be run with:
     nosetests
     coverage report -m
 """
-# import logging
+
 import unittest
 import os
 from service.models import Customer, DataValidationError, db
