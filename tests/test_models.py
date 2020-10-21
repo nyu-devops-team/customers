@@ -256,7 +256,7 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(customers[0].active, False)
 
     def test_find_by_active(self):
-        """ Find a Customer by email """
+        """ Find a Customer by active """
         Customer(first_name="Some", last_name="Dude",email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice",active=True).create()
         Customer(first_name="P", last_name="Sherman",email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya",active=False).create()
         customers = Customer.find_by_active(active=False)
