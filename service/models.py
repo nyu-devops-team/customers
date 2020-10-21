@@ -187,7 +187,7 @@ class Customer(db.Model):
         """
         cls.logger.info("Processing address query for %s ...", address)
         return cls.query.filter(cls.address == address)
-        
+
     @classmethod
     def find_by_email(cls, email: str):
         """Returns all of the Customers with a given email

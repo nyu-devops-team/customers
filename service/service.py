@@ -13,9 +13,9 @@ PUT /customers/{id}/suspend - suspend the Customer with the given id number
 
 """
 
-import os
-import sys
-import logging
+# import os
+# import sys
+# import logging
 from flask import Flask, jsonify, request, url_for, make_response, abort
 from flask_api import status  # HTTP Status Codes
 from werkzeug.exceptions import NotFound, PreconditionFailed
@@ -64,8 +64,8 @@ def not_found(error):
 @app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)
 def method_not_supported(error):    # pragma: no cover
     """ Handles unsuppoted HTTP methods with 405_METHOD_NOT_SUPPORTED """
-    app.logger.warning(str(error)) 
-    return (   
+    app.logger.warning(str(error))
+    return (
         jsonify(
             status=status.HTTP_405_METHOD_NOT_ALLOWED,
             error="Method not Allowed",
@@ -78,8 +78,8 @@ def method_not_supported(error):    # pragma: no cover
 @app.errorhandler(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 def mediatype_not_supported(error):   # pragma: no cover
     """ Handles unsuppoted media requests with 415_UNSUPPORTED_MEDIA_TYPE """
-    app.logger.warning(str(error))  
-    return (   
+    app.logger.warning(str(error))
+    return (
         jsonify(
             status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             error="Unsupported media type",

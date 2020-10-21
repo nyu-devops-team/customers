@@ -8,12 +8,14 @@ Test cases can be run with the following:
 import os
 import logging
 import unittest
-from unittest.mock import MagicMock, patch
+# from unittest.mock import MagicMock, patch
 from flask_api import status  # HTTP Status Codes
-from .customer_factory import CustomerFactory
 
 from service.models import db, Customer
 from service.service import app, init_db
+
+from .customer_factory import CustomerFactory
+
 
 # Disable all but ciritcal erros suirng unittest
 logging.disable(logging.CRITICAL)
@@ -88,8 +90,8 @@ class TestCustomers(unittest.TestCase):
         resp = self.app.get("/customers")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        self.assertEqual(len(data),3)
-        
+        self.assertEqual(len(data), 3)
+
     def test_get_customer(self):
         """ Get a single Customer """
         # get the id of a customer
@@ -132,7 +134,7 @@ class TestCustomers(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         # Make sure location header is set
         location = resp.headers.get("Location", None)
-        self.assertTrue(location != None)
+        self.assertTrue(location is not None)
         # Check the data is correct
         new_customer = resp.get_json()
         # self.assertEqual(new_customer["name"], test_customer.name, "Names do not match")
@@ -207,7 +209,7 @@ class TestCustomers(unittest.TestCase):
             "/customers/{}".format(test_customer.id), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(len(resp.data),0)
+        self.assertEqual(len(resp.data), 0)
 
         resp = self.app.get(
             "/customers/{}".format(test_customer.id), content_type="application/json"
@@ -231,7 +233,7 @@ class TestCustomers(unittest.TestCase):
             content_type="application/json",
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        
+
         # attempt to resuspend the customer
         suspended_customer = resp.get_json()
         self.assertEqual(suspended_customer["active"], False)
