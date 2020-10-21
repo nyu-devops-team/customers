@@ -308,7 +308,6 @@ class TestCustomers(unittest.TestCase):
         for customer in active_customers:
             self.assertEqual(customer["active"], test_active)
 
-
 ######################################################################
 #   M A I N
 ######################################################################
