@@ -103,6 +103,13 @@ class Customer(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete(self):
+        """
+        Deletes a Customer from the database
+        """
+        db.session.delete(self)
+        db.session.commit()
+
     def update(self):
         """
         Updates a Customer to the data store

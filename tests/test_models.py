@@ -106,6 +106,21 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(len(customers), 1)
         self.assertEqual(customers[0].address, "Times Sq 42nd St")
 
+    def test_delete_a_customer(self):
+        """ Delete a Customer """
+        customer = Customer(
+            first_name = "Harry",
+            last_name = "Potter",
+            email = "hpotter@hogwarts.edu",
+            address = "9 3/4 Gryffindor Lane",
+            active=True,
+        )
+        customer.create()
+        self.assertEqual(len(Customer.all()),1)
+        customer.delete()
+        self.assertEqual(len(Customer.all()),0)
+
+
     def test_bad_update(self):
         customer = Customer(
             first_name="John", 
