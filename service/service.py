@@ -13,9 +13,6 @@ PUT /customers/{id}/suspend - suspend the Customer with the given id number
 
 """
 
-# import os
-# import sys
-# import logging
 from flask import Flask, jsonify, request, url_for, make_response, abort
 from flask_api import status  # HTTP Status Codes
 from werkzeug.exceptions import NotFound, PreconditionFailed
