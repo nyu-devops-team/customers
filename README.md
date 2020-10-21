@@ -6,7 +6,9 @@ The customers resource is a representation of the customer accounts of the eComm
 | HTTP Method | URL | Description | Return
 | :--- | :--- | :--- | :--- |
 | `GET` | `/customers/{id}` | Get customer by ID | Customer Object
+| `GET` | `/customers` | Returns a list of all the Customers | Customer Object
 | `POST` | `/customers/` | Creates a new Customer record in the database | Customer Object
+| `PUT` | `/customers/{id}/{id}` | Updates a Customer record in the database | Customer Object
 | `PUT` | `/customers/{id}/suspend` | Suspend the Customer with the given id number | Customer Object
 | `DELETE` | `/customers/{id}` | Delete the Customer with the given id number | 204 Status Code
 
