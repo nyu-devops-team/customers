@@ -200,6 +200,20 @@ class TestCustomers(unittest.TestCase):
         updated_customer = resp.get_json()
         self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
+    def test_delete_a_customer(self):
+        """ Delete a Customer """
+        test_customer = self._create_customers(1)[0]
+        resp = self.app.delete(
+            "/customers/{}".format(test_customer.id), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(resp.data),0)
+
+        resp = self.app.get(
+            "/customers/{}".format(test_customer.id), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_suspend_customer(self):
         """ Suspend an existing Customer """
         # create a customer to suspend
@@ -233,7 +247,6 @@ class TestCustomers(unittest.TestCase):
             content_type="application/json",
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
-
 
 ######################################################################
 #   M A I N
