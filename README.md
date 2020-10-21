@@ -5,10 +5,10 @@ The customers resource is a representation of the customer accounts of the eComm
 ### URLs
 | HTTP Method | URL | Description | Return
 | :--- | :--- | :--- | :--- |
-| `GET` | `/customers/{customer_id}` | Get customer by ID | Customer Object
+| `GET` | `/customers/{id}` | Get customer by ID | Customer Object
 | `POST` | `/customers/` | Creates a new Customer record in the database | Customer Object
 | `PUT` | `/customers/{id}/suspend` | Suspend the Customer with the given id number | Customer Object
-
+| `DELETE` | `/customers/{id}` | Delete the Customer with the given id number | 204 Status Code
 
 ### Customer Object
 | Fields | Type | Description
