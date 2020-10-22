@@ -1,4 +1,7 @@
 # customers
+
+[![Build Status](https://travis-ci.org/nyu-devops-team/customers.svg?branch=master)](https://travis-ci.org/nyu-devops-team/customers)
+
 The customers resource is a representation of the customer accounts of the eCommerce site
 
 ## API Documentation
