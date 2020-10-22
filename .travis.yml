@@ -2,17 +2,20 @@ language: python
 python:
   - "3.6"
 
-# command to install dependencies
-install: "pip install -r requirements.txt"
-
-# commands to run tests
-before_script: redis-cli ping
-
-script:
-  - nosetests
-
-#after_success:
-# - codecov
-
 services:
-  - redis-server
+  - postgresql
+
+env:
+  - DATABASE_URI=postgres://postgres:@localhost:5432/test
+
+before_script:
+  - psql -c 'create database test;' -U postgres
+
+# command to install dependencies
+install: "pip3 install -r requirements.txt"
+
+# commend to run tests
+script: nosetests
+
+# after_sucess:
+#   - codecov
