@@ -66,7 +66,7 @@ class TestCustomers(unittest.TestCase):
                 last_name="world",
                 email="helloworld2@gmail.com",
                 address="456 7th street, New York, NY, 10001",
-                active=True
+                active=True,
             )
             db.session.add(temp)
             customers.append(temp)
@@ -107,17 +107,20 @@ class TestCustomers(unittest.TestCase):
         resp = self.app.get("/customers/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-
     def _create_customers(self, count):
         """ Factory method to create customers in bulk """
         customers = []
         for _ in range(count):
             test_customer = CustomerFactory()
             resp = self.app.post(
-                "/customers", json=test_customer.serialize(), content_type="application/json"
+                "/customers",
+                json=test_customer.serialize(),
+                content_type="application/json",
             )
             self.assertEqual(
-                resp.status_code, status.HTTP_201_CREATED, "Could not create test customer"
+                resp.status_code,
+                status.HTTP_201_CREATED,
+                "Could not create test customer",
             )
             new_customer = resp.get_json()
             test_customer.id = new_customer["id"]
@@ -128,7 +131,9 @@ class TestCustomers(unittest.TestCase):
         """ Create a new Customer """
         test_customer = CustomerFactory()
         resp = self.app.post(
-            "/customers", json=test_customer.serialize(), content_type="application/json"
+            "/customers",
+            json=test_customer.serialize(),
+            content_type="application/json",
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         # Make sure location header is set
@@ -138,10 +143,14 @@ class TestCustomers(unittest.TestCase):
         new_customer = resp.get_json()
         # self.assertEqual(new_customer["name"], test_customer.name, "Names do not match")
         self.assertEqual(
-            new_customer["first_name"], test_customer.first_name, "first_name does not match"
+            new_customer["first_name"],
+            test_customer.first_name,
+            "first_name does not match",
         )
         self.assertEqual(
-            new_customer["last_name"], test_customer.last_name, "last_name does not match"
+            new_customer["last_name"],
+            test_customer.last_name,
+            "last_name does not match",
         )
         self.assertEqual(
             new_customer["email"], test_customer.email, "email does not match"
@@ -164,10 +173,14 @@ class TestCustomers(unittest.TestCase):
         #     new_customer["available"], test_customer.available, "Availability does not match"
         # )
         self.assertEqual(
-            new_customer["first_name"], test_customer.first_name, "first_name does not match"
+            new_customer["first_name"],
+            test_customer.first_name,
+            "first_name does not match",
         )
         self.assertEqual(
-            new_customer["last_name"], test_customer.last_name, "last_name does not match"
+            new_customer["last_name"],
+            test_customer.last_name,
+            "last_name does not match",
         )
         self.assertEqual(
             new_customer["email"], test_customer.email, "email does not match"
@@ -179,13 +192,14 @@ class TestCustomers(unittest.TestCase):
             new_customer["active"], test_customer.active, "active does not match"
         )
 
-
     def test_update_customer(self):
         """ Update an existing Customer """
         # create a customer to update
         test_customer = CustomerFactory()
         resp = self.app.post(
-            "/customers", json=test_customer.serialize(), content_type="application/json"
+            "/customers",
+            json=test_customer.serialize(),
+            content_type="application/json",
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
@@ -221,7 +235,9 @@ class TestCustomers(unittest.TestCase):
         test_customer = CustomerFactory()
         test_customer.active = 1
         resp = self.app.post(
-            "/customers", json=test_customer.serialize(), content_type="application/json"
+            "/customers",
+            json=test_customer.serialize(),
+            content_type="application/json",
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
@@ -254,10 +270,14 @@ class TestCustomers(unittest.TestCase):
         """ Query Customers by first name """
         customers = self._create_customers(10)
         test_first_name = customers[0].first_name
-        resp = self.app.get("/customers", query_string="first_name={}".format(test_first_name))
+        resp = self.app.get(
+            "/customers", query_string="first_name={}".format(test_first_name)
+        )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        first_name_customers = [customer for customer in data if customer["first_name"] == test_first_name]
+        first_name_customers = [
+            customer for customer in data if customer["first_name"] == test_first_name
+        ]
         # check the data just to be sure
         for customer in first_name_customers:
             self.assertEqual(customer["first_name"], test_first_name)
@@ -266,10 +286,14 @@ class TestCustomers(unittest.TestCase):
         """ Query Customers by last name """
         customers = self._create_customers(10)
         test_last_name = customers[0].last_name
-        resp = self.app.get("/customers", query_string="last_name={}".format(test_last_name))
+        resp = self.app.get(
+            "/customers", query_string="last_name={}".format(test_last_name)
+        )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        last_name_customers = [customer for customer in data if customer["last_name"] == test_last_name]
+        last_name_customers = [
+            customer for customer in data if customer["last_name"] == test_last_name
+        ]
         # check the data just to be sure
         for customer in last_name_customers:
             self.assertEqual(customer["last_name"], test_last_name)
@@ -278,10 +302,14 @@ class TestCustomers(unittest.TestCase):
         """ Query Customers by address """
         customers = self._create_customers(10)
         test_address = customers[0].address
-        resp = self.app.get("/customers", query_string="address={}".format(test_address))
+        resp = self.app.get(
+            "/customers", query_string="address={}".format(test_address)
+        )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        address_customers = [customer for customer in data if customer["address"] == test_address]
+        address_customers = [
+            customer for customer in data if customer["address"] == test_address
+        ]
         # check the data just to be sure
         for customer in address_customers:
             self.assertEqual(customer["address"], test_address)
@@ -293,7 +321,9 @@ class TestCustomers(unittest.TestCase):
         resp = self.app.get("/customers", query_string="email={}".format(test_email))
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        email_customers = [customer for customer in data if customer["email"] == test_email]
+        email_customers = [
+            customer for customer in data if customer["email"] == test_email
+        ]
         # check the data just to be sure
         for customer in email_customers:
             self.assertEqual(customer["email"], test_email)
@@ -305,10 +335,13 @@ class TestCustomers(unittest.TestCase):
         resp = self.app.get("/customers", query_string="active={}".format(test_active))
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        active_customers = [customer for customer in data if customer["active"] == test_active]
+        active_customers = [
+            customer for customer in data if customer["active"] == test_active
+        ]
         # check the data just to be sure
         for customer in active_customers:
             self.assertEqual(customer["active"], test_active)
+
 
 ######################################################################
 #   M A I N

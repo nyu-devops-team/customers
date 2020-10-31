@@ -26,7 +26,7 @@ if __name__ != "__main__":
     formatter = logging.Formatter(
         "[%(asctime)s] [%(levelname)s] [%(module)s] %(message)s", "%Y-%m-%d %H:%M:%S %z"
     )
-    for handler in app.logger.handlers:   # pragma: no cover
+    for handler in app.logger.handlers:  # pragma: no cover
         handler.setFormatter(formatter)
     app.logger.info("Logging handler established")
 
@@ -36,7 +36,7 @@ app.logger.info(70 * "*")
 
 try:
     service.init_db()  # make our sqlalchemy tables
-except Exception as error:   # pragma: no cover
+except Exception as error:  # pragma: no cover
     app.logger.critical("%s: Cannot continue", error)
     # gunicorn requires exit code 4 to stop spawning workers when they die
     sys.exit(4)

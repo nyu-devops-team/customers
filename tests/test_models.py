@@ -76,7 +76,8 @@ class TestCustomerModel(unittest.TestCase):
             last_name="Doe",
             email="jdoe@gmail.com",
             address="456 Bronx Ave",
-            active=True)
+            active=True,
+        )
         self.assertTrue(customer is not None)
         self.assertEqual(customer.id, None)
         customer.create()
@@ -93,7 +94,7 @@ class TestCustomerModel(unittest.TestCase):
             email="jsmith@gmail.com",
             address="123 Brooklyn Ave",
             active=True,
-            )
+        )
         customer.create()
         self.assertEqual(customer.id, 1)
         # Change it an update it
@@ -120,7 +121,6 @@ class TestCustomerModel(unittest.TestCase):
         customer.delete()
         self.assertEqual(len(Customer.all()), 0)
 
-
     def test_bad_update(self):
         customer = Customer(
             first_name="John",
@@ -128,7 +128,7 @@ class TestCustomerModel(unittest.TestCase):
             email="jsmith@gmail.com",
             address="123 Brooklyn Ave",
             active=True,
-            )
+        )
         self.assertRaises(DataValidationError, customer.update)
 
     def test_suspend_a_customer(self):
@@ -139,7 +139,7 @@ class TestCustomerModel(unittest.TestCase):
             email="jsmith@gmail.com",
             address="123 Brooklyn Ave",
             active=True,
-            )
+        )
         customer.create()
         self.assertEqual(customer.id, 1)
         # Change it and suspend it
@@ -192,12 +192,14 @@ class TestCustomerModel(unittest.TestCase):
 
     def test_deserialize_a_customer(self):
         """ Test deserialization of a Customer """
-        data = {"id": 1,
-                "first_name": "John",
-                "last_name": "Smith",
-                "email": "jsmith@gmail.com",
-                "address": "123 Brooklyn Ave",
-                "active": True}
+        data = {
+            "id": 1,
+            "first_name": "John",
+            "last_name": "Smith",
+            "email": "jsmith@gmail.com",
+            "address": "123 Brooklyn Ave",
+            "active": True,
+        }
 
         customer = Customer()
         customer.deserialize(data)
@@ -217,11 +219,13 @@ class TestCustomerModel(unittest.TestCase):
         self.assertRaises(DataValidationError, customer.deserialize, data)
 
         customer2 = Customer()
-        data2 = {"id": 1,
-                "first_name": "John", 
-                "last_name": "Smith",
-                "address": "123 Brooklyn Ave",
-                "active": True}
+        data2 = {
+            "id": 1,
+            "first_name": "John",
+            "last_name": "Smith",
+            "address": "123 Brooklyn Ave",
+            "active": True,
+        }
         self.assertRaises(DataValidationError, customer2.deserialize, data2)
 
     def test_find_customer(self):
@@ -232,7 +236,7 @@ class TestCustomerModel(unittest.TestCase):
             last_name="yoyoyo",
             email="yoyoyobye@gmail.com",
             address="456 7th street, New York, NY, 10001",
-            active=True
+            active=True,
         )
         db.session.add(customer)
         result = Customer.find(customer.id)
@@ -246,8 +250,20 @@ class TestCustomerModel(unittest.TestCase):
 
     def test_find_by_email(self):
         """ Find a Customer by email """
-        Customer(first_name="Some", last_name="Dude", email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice", active=True).create()
-        Customer(first_name="P", last_name="Sherman", email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya", active=False).create()
+        Customer(
+            first_name="Some",
+            last_name="Dude",
+            email="coys@internet.com",
+            address="House,Street,NotNewYork,GoodChoice",
+            active=True,
+        ).create()
+        Customer(
+            first_name="P",
+            last_name="Sherman",
+            email="dory@findingnemo.com",
+            address="42, Wallaby Way, Sydney, 'Straya",
+            active=False,
+        ).create()
         customers = Customer.find_by_email(email="dory@findingnemo.com")
         self.assertEqual(customers[0].email, "dory@findingnemo.com")
         self.assertEqual(customers[0].first_name, "P")
@@ -257,8 +273,20 @@ class TestCustomerModel(unittest.TestCase):
 
     def test_find_by_active(self):
         """ Find a Customer by active """
-        Customer(first_name="Some", last_name="Dude", email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice", active=True).create()
-        Customer(first_name="P", last_name="Sherman",email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya", active=False).create()
+        Customer(
+            first_name="Some",
+            last_name="Dude",
+            email="coys@internet.com",
+            address="House,Street,NotNewYork,GoodChoice",
+            active=True,
+        ).create()
+        Customer(
+            first_name="P",
+            last_name="Sherman",
+            email="dory@findingnemo.com",
+            address="42, Wallaby Way, Sydney, 'Straya",
+            active=False,
+        ).create()
         customers = Customer.find_by_active(active=False)
         self.assertEqual(customers[0].email, "dory@findingnemo.com")
         self.assertEqual(customers[0].first_name, "P")
@@ -268,8 +296,20 @@ class TestCustomerModel(unittest.TestCase):
 
     def test_find_by_address(self):
         """ Find a Customer by address """
-        Customer(first_name="Some", last_name="Dude", email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice", active=True).create()
-        Customer(first_name="P", last_name="Sherman", email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya", active=False).create()
+        Customer(
+            first_name="Some",
+            last_name="Dude",
+            email="coys@internet.com",
+            address="House,Street,NotNewYork,GoodChoice",
+            active=True,
+        ).create()
+        Customer(
+            first_name="P",
+            last_name="Sherman",
+            email="dory@findingnemo.com",
+            address="42, Wallaby Way, Sydney, 'Straya",
+            active=False,
+        ).create()
         customers = Customer.find_by_address(address="42, Wallaby Way, Sydney, 'Straya")
         self.assertEqual(customers[0].email, "dory@findingnemo.com")
         self.assertEqual(customers[0].first_name, "P")
@@ -279,8 +319,20 @@ class TestCustomerModel(unittest.TestCase):
 
     def test_find_by_first_name(self):
         """ Find a Customer by first name """
-        Customer(first_name="Some", last_name="Dude", email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice", active=True).create()
-        Customer(first_name="P", last_name="Sherman", email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya", active=False).create()
+        Customer(
+            first_name="Some",
+            last_name="Dude",
+            email="coys@internet.com",
+            address="House,Street,NotNewYork,GoodChoice",
+            active=True,
+        ).create()
+        Customer(
+            first_name="P",
+            last_name="Sherman",
+            email="dory@findingnemo.com",
+            address="42, Wallaby Way, Sydney, 'Straya",
+            active=False,
+        ).create()
         customers = Customer.find_by_first_name(first_name="P")
         self.assertEqual(customers[0].email, "dory@findingnemo.com")
         self.assertEqual(customers[0].first_name, "P")
@@ -290,14 +342,27 @@ class TestCustomerModel(unittest.TestCase):
 
     def test_find_by_last_name(self):
         """ Find a Customer by last name """
-        Customer(first_name="Some", last_name="Dude", email="coys@internet.com", address="House,Street,NotNewYork,GoodChoice", active=True).create()
-        Customer(first_name="P", last_name="Sherman", email="dory@findingnemo.com", address="42, Wallaby Way, Sydney, 'Straya", active=False).create()
+        Customer(
+            first_name="Some",
+            last_name="Dude",
+            email="coys@internet.com",
+            address="House,Street,NotNewYork,GoodChoice",
+            active=True,
+        ).create()
+        Customer(
+            first_name="P",
+            last_name="Sherman",
+            email="dory@findingnemo.com",
+            address="42, Wallaby Way, Sydney, 'Straya",
+            active=False,
+        ).create()
         customers = Customer.find_by_last_name(last_name="Sherman")
         self.assertEqual(customers[0].email, "dory@findingnemo.com")
         self.assertEqual(customers[0].first_name, "P")
         self.assertEqual(customers[0].last_name, "Sherman")
         self.assertEqual(customers[0].address, "42, Wallaby Way, Sydney, 'Straya")
         self.assertEqual(customers[0].active, False)
+
 
 ######################################################################
 #   M A I N

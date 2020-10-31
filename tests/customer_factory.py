@@ -1,4 +1,3 @@
-
 """
 Test Factory to make fake objects for testing
 """
@@ -16,7 +15,9 @@ class CustomerFactory(factory.Factory):
     id = factory.Sequence(lambda n: n)
     first_name = FuzzyChoice(choices=["LeBron", "Kobe", "Steve"])
     last_name = FuzzyChoice(choices=["James", "Bryant", "Nash"])
-    email = FuzzyChoice(choices=["lbj23@gmail.com", "kb24@gmail.com", "sn10@hotmail.com"])
+    email = FuzzyChoice(
+        choices=["lbj23@gmail.com", "kb24@gmail.com", "sn10@hotmail.com"]
+    )
     address = FuzzyChoice(choices=["23 lbj avenue", "24 kobedrive", "10 steve avenue"])
     active = FuzzyChoice(choices=[1, 0, 1])
     # category = FuzzyChoice(choices=["dog", "cat", "bird", "fish"])
