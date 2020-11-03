@@ -127,7 +127,10 @@ def list_customers():
     """ Returns all of the Customers """
     app.logger.info("Request to list all customers")
     customers = []
-    customers = Customer.all()
+    try:
+        customers = Customer.all()
+    except:
+        abort(500)
 
     results = [customer.serialize() for customer in customers]
     app.logger.info("Returning %d pets", len(results))
