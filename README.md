@@ -67,6 +67,20 @@ If you make changes to the Vagrantfile after the virtual machine (VM) is already
     $ vagrant ssh
 ```
 
+### Logging in to Cloud Foundry
+After launching the virtual machine through vagrant, you can log into IBM Cloud Foundry: 
+
+```shell
+  $ ibmcloud login -a https://cloud.ibm.com --apikey @~/.bluemix/apiKey.json -r us-south -o <username>@nyu.edu -s dev
+```
+
+You should have created and downloaded an IBM API key and saved it to you `~/.bluemix` folder:
+
+```shell
+  $ mkdir ~/.bluemix/
+  $ mv ~/Downloads/apikey.json ~/.bluemix/apiKey.json
+```
+
 ## Manually Installing Requirements 
 
 Install the necessary packages by running:
