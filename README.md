@@ -1,6 +1,7 @@
 # customers
 
 [![Build Status](https://travis-ci.org/nyu-devops-team/customers.svg?branch=master)](https://travis-ci.org/nyu-devops-team/customers)
+[![codecov](https://codecov.io/gh/nyu-devops-team/customers/branch/master/graph/badge.svg?token=0K9OY8IZMG)](https://codecov.io/gh/nyu-devops-team/customers)
 
 The customers resource is a representation of the customer accounts of the eCommerce site
 
