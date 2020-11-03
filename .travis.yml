@@ -17,5 +17,5 @@ install: "pip3 install -r requirements.txt"
 # commend to run tests
 script: nosetests
 
-# after_sucess:
-#   - codecov
+after_sucess:
+  - codecov
