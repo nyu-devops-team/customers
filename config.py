@@ -5,7 +5,7 @@ import os
 import json
 
 # Get configuration from environment
-
+print("-----Initial DATABASE_URL-----")
 # DATABASE_URI = os.getenv('DATABASE_URI', 'sqlite:///../db/test.db')
 DATABASE_URI = os.getenv(
     "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
