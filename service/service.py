@@ -126,14 +126,31 @@ def list_customers():
     """ Returns all of the Customers """
     app.logger.info("Request to list all customers")
     customers = []
-    customers = Customer.all()
+    
+    first_name = request.args.get('first_name')
+    last_name = request.args.get('last_name')
+    address = request.args.get('address')
+    email = request.args.get('email')
+    active = request.args.get('active')
+    print(active)
+    
+    if first_name:
+        customers = Customer.find_by_first_name(first_name)
+    elif last_name:
+        customers = Customer.find_by_last_name(last_name)
+    elif address:
+        customers = Customer.find_by_address(address)
+    elif email:
+        customers = Customer.find_by_email(email)
+    elif active:
+        customers = Customer.find_by_active(active)
+    else:
+        customers = Customer.all()
 
     results = [customer.serialize() for customer in customers]
-    app.logger.info("Returning %d pets", len(results))
+    app.logger.info("Returning %d customerss", len(results))
     return make_response(jsonify(results), status.HTTP_200_OK)
-    # Note: query filtering would also be implemented in this function
-
-
+    
 ######################################################################
 # RETRIEVE A CUSTOMER
 ######################################################################
