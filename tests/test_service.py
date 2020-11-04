@@ -302,6 +302,7 @@ class TestCustomers(unittest.TestCase):
         """ Query Customers by active """
         customers = self._create_customers(10)
         test_active = customers[0].active
+        print(test_active)
         resp = self.app.get("/customers", query_string="active={}".format(test_active))
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
