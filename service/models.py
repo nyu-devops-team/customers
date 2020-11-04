@@ -95,7 +95,6 @@ class Customer(db.Model):
             )
         return self
 
-
     def create(self):
         """
         Creates a Customer to the data store
@@ -175,7 +174,6 @@ class Customer(db.Model):
         """
         cls.logger.info("Processing last name query for %s ...", last_name)
         return cls.query.filter(cls.last_name == last_name)
-
 
     @classmethod
     def find_by_address(cls, address: str):

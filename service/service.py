@@ -29,13 +29,13 @@ from . import app
 # Error Handlers
 ######################################################################
 @app.errorhandler(DataValidationError)
-def request_validation_error(error):   # pragma: no cover
+def request_validation_error(error):  # pragma: no cover
     """ Handles Value Errors from bad data """
     return bad_request(error)
 
 
 @app.errorhandler(status.HTTP_400_BAD_REQUEST)
-def bad_request(error):   # pragma: no cover
+def bad_request(error):  # pragma: no cover
     """ Handles bad reuests with 400_BAD_REQUEST """
     app.logger.warning(str(error))
     return (
@@ -59,7 +59,7 @@ def not_found(error):
 
 
 @app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)
-def method_not_supported(error):    # pragma: no cover
+def method_not_supported(error):  # pragma: no cover
     """ Handles unsuppoted HTTP methods with 405_METHOD_NOT_SUPPORTED """
     app.logger.warning(str(error))
     return (
@@ -73,7 +73,7 @@ def method_not_supported(error):    # pragma: no cover
 
 
 @app.errorhandler(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-def mediatype_not_supported(error):   # pragma: no cover
+def mediatype_not_supported(error):  # pragma: no cover
     """ Handles unsuppoted media requests with 415_UNSUPPORTED_MEDIA_TYPE """
     app.logger.warning(str(error))
     return (
@@ -87,7 +87,7 @@ def mediatype_not_supported(error):   # pragma: no cover
 
 
 @app.errorhandler(status.HTTP_500_INTERNAL_SERVER_ERROR)
-def internal_server_error(error):   # pragma: no cover
+def internal_server_error(error):  # pragma: no cover
     """ Handles unexpected server error with 500_SERVER_ERROR """
     app.logger.error(str(error))
     return (
@@ -117,6 +117,7 @@ def index():
         ),
         status.HTTP_200_OK,
     )
+
 
 # ######################################################################
 # # LIST ALL CUSTOMERS
@@ -165,7 +166,9 @@ def get_customers(customer_id):
     if not customer:
         raise NotFound("Customer with id '{}' was not found.".format(customer_id))
 
-    app.logger.info("Returning customer: %s", customer.first_name + " " + customer.last_name)
+    app.logger.info(
+        "Returning customer: %s", customer.first_name + " " + customer.last_name
+    )
     return make_response(jsonify(customer.serialize()), status.HTTP_200_OK)
 
 
@@ -189,7 +192,8 @@ def create_customers():
     app.logger.info("Customer with ID [%s] created.", customer.id)
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
-        )
+    )
+
 
 ######################################################################
 # UPDATE AN EXISTING CUSTOMER
@@ -228,7 +232,9 @@ def suspend_customers(customer_id):
     if not customer:
         raise NotFound("Customer with id '{}' was not found.".format(customer_id))
     if not customer.active:
-        raise PreconditionFailed("Customer with id '{}' was already suspended.".format(customer_id))
+        raise PreconditionFailed(
+            "Customer with id '{}' was already suspended.".format(customer_id)
+        )
     customer.active = False
     customer.update()
 
@@ -265,7 +271,7 @@ def init_db():
     Customer.init_db(app)
 
 
-def check_content_type(content_type):   # pragma: no cover
+def check_content_type(content_type):  # pragma: no cover
     """ Checks that the media type is correct """
     if request.headers["Content-Type"] == content_type:
         return
