@@ -16,6 +16,7 @@ DATABASE_URI = os.getenv(
 
 # override if we are running in Cloud Foundry
 if 'VCAP_SERVICES' in os.environ:
+    print("-----DATABASE_URL change to cloud version-----")
     vcap = json.loads(os.environ['VCAP_SERVICES'])
     DATABASE_URI = vcap['user-provided'][0]['credentials']['url'] 
 
