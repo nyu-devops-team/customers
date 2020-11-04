@@ -29,6 +29,7 @@ class TestCustomerModel(unittest.TestCase):
         app.debug = False
         # Set up the test database
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+        Customer.init_db(app)
 
     @classmethod
     def tearDownClass(cls):
@@ -37,7 +38,6 @@ class TestCustomerModel(unittest.TestCase):
 
     def setUp(self):
         """ This runs before each test """
-        Customer.init_db(app)
         db.drop_all()  # clean up the last tests
         db.create_all()  # make our sqlalchemy tables
 
