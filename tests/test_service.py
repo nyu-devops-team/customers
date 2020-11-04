@@ -8,6 +8,7 @@ Test cases can be run with the following:
 import os
 import logging
 import unittest
+import json
 from flask_api import status  # HTTP Status Codes
 
 from service.models import db, Customer

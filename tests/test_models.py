@@ -9,6 +9,7 @@ Test cases can be run with:
 
 import unittest
 import os
+import json
 from service.models import Customer, DataValidationError, db
 from service import app
 
