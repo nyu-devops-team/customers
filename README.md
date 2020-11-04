@@ -67,7 +67,7 @@ If you make changes to the Vagrantfile after the virtual machine (VM) is already
     $ vagrant ssh
 ```
 
-## Logging in to Cloud Foundry
+## Logging into Cloud Foundry
 After launching the virtual machine through vagrant, you can log into IBM Cloud Foundry: 
 
 ```shell
