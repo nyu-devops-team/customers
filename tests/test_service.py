@@ -6,6 +6,7 @@ Test cases can be run with the following:
   coverage report -m
 """
 import os
+import mock
 import logging
 import unittest
 from flask_api import status  # HTTP Status Codes
@@ -342,6 +343,16 @@ class TestCustomers(unittest.TestCase):
         for customer in active_customers:
             self.assertEqual(customer["active"], test_active)
 
+    def test_method_not_supported(self):
+        resp = self.app.put('/customers')
+        self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    @mock.patch('service.service.Customer.all')
+    def test_search_bad_data(self, customer_find_mock):
+        customer_find_mock.side_effect = Exception()
+        resp = self.app.get('/customers', query_string='id=20')
+
+        self.assertEqual(resp.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ######################################################################
 #   M A I N

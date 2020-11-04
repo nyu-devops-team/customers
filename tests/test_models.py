@@ -153,6 +153,7 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(customers[0].active, False)
 
     def test_repr(self):
+        """ Test representation of Data"""
         customer = Customer()
         self.assertEqual(repr(customer), "<Customer> None None id = [None]>")
 
@@ -166,7 +167,7 @@ class TestCustomerModel(unittest.TestCase):
         self.assertEqual(repr(customer2), "<Customer> 'John' 'Smith' id = [None]>")
 
     def test_serialize_a_customer(self):
-        """ Test serialization of a a Customer """
+        """ Test serialization of a Customer """
         customer = Customer(
             first_name="John",
             last_name="Smith",

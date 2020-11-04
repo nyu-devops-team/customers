@@ -133,7 +133,6 @@ def list_customers():
     address = request.args.get('address')
     email = request.args.get('email')
     active = request.args.get('active')
-    print(active)
     
     if first_name:
         customers = Customer.find_by_first_name(first_name)
@@ -146,7 +145,10 @@ def list_customers():
     elif active:
         customers = Customer.find_by_active(active)
     else:
-        customers = Customer.all()
+        try:
+            customers = Customer.all()
+        except:
+            abort(500)
 
     results = [customer.serialize() for customer in customers]
     app.logger.info("Returning %d customerss", len(results))
