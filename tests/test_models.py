@@ -9,6 +9,7 @@ Test cases can be run with:
 
 import unittest
 import os
+import json
 from service.models import Customer, DataValidationError, db
 from service import app
 
@@ -16,6 +17,11 @@ from service import app
 DATABASE_URI = os.getenv(
     "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
 )
+if 'VCAP_SERVICES' in os.environ:
+    vcap = json.loads(os.environ['VCAP_SERVICES'])
+    for item in vcap['user-provided']:
+        if item['name'] == "ElephantSQL-Test":
+            DATABASE_URI = item['credentials']['url']
 
 ######################################################################
 #  C U S T O M E R   M O D E L   T E S T   C A S E S
@@ -29,6 +35,7 @@ class TestCustomerModel(unittest.TestCase):
         app.debug = False
         # Set up the test database
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+        Customer.init_db(app)
 
     @classmethod
     def tearDownClass(cls):
@@ -37,7 +44,6 @@ class TestCustomerModel(unittest.TestCase):
 
     def setUp(self):
         """ This runs before each test """
-        Customer.init_db(app)
         db.drop_all()  # clean up the last tests
         db.create_all()  # make our sqlalchemy tables
 

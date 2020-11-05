@@ -9,6 +9,7 @@ import os
 import mock
 import logging
 import unittest
+import json
 from flask_api import status  # HTTP Status Codes
 
 from service.models import db, Customer
@@ -24,6 +25,12 @@ logging.disable(logging.CRITICAL)
 DATABASE_URI = os.getenv(
     "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
 )
+if 'VCAP_SERVICES' in os.environ:
+    vcap = json.loads(os.environ['VCAP_SERVICES'])
+    for item in vcap['user-provided']:
+        if item['name'] == "ElephantSQL-Test":
+            DATABASE_URI = item['credentials']['url']
+    
 
 ######################################################################
 #  T E S T   C A S E S
@@ -39,6 +46,7 @@ class TestCustomers(unittest.TestCase):
 
         # setup the test database
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+        init_db()
 
     @classmethod
     def tearDownClass(cls):
@@ -47,7 +55,6 @@ class TestCustomers(unittest.TestCase):
 
     def setUp(self):
         """ This runs before each test """
-        init_db()
         db.drop_all()  # clean the last tests
         db.create_all()  # create new tables
         self.app = app.test_client()
