@@ -20,7 +20,7 @@ DATABASE_URI = os.getenv(
 if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.environ['VCAP_SERVICES'])
     for item in vcap['user-provided']:
-        if item['name'] == "ElephantSQL-Test":
+        if item['name'] == "ElephantSQL":
             DATABASE_URI = item['credentials']['url']
 
 ######################################################################
