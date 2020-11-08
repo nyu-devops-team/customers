@@ -106,17 +106,18 @@ def internal_server_error(error):  # pragma: no cover
 @app.route("/")
 def index():
     """ Root URL response """
-    app.logger.info("Request for Root URL")
-    return (
-        jsonify(
-            name="Customer REST API Service",
-            version="1.0",
-            paths=url_for(
-                "list_customers", _external=True
-            ),  # url_for() generates the url for a function
-        ),
-        status.HTTP_200_OK,
-    )
+    # app.logger.info("Request for Root URL")
+    # return (
+    #     jsonify(
+    #         name="Customer REST API Service",
+    #         version="1.0",
+    #         paths=url_for(
+    #             "list_customers", _external=True
+    #         ),  # url_for() generates the url for a function
+    #     ),
+    #     status.HTTP_200_OK,
+    # )
+    return app.send_static_file('index.html')
 
 
 # ######################################################################
