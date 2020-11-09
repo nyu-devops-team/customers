@@ -103,6 +103,12 @@ Then you can run the Flask app:
 
 Note: since you are running the service inside a virtual machine, you have to set the host to a public server so that the service can be accessible outside of the VM.
 
+If the Procfile is set up, you do not need to create the .env file in order to run the apply. You just run using:
+
+```shell
+    $ honcho start
+```
+
 ## Manually Running the Tests
 
 Run the tests using `nose`
