@@ -86,10 +86,9 @@ class TestCustomers(unittest.TestCase):
 
     def test_index(self):
         """ Test index call """
-        resp = self.app.get("/")
+        resp = self.app.get('/')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        data = resp.get_json()
-        self.assertEqual(data["name"], "Customer REST API Service")
+        self.assertIn(b'Customer Demo REST API Service', resp.data)
 
     def test_get_customer_list(self):
         """Get a list of Customers"""
