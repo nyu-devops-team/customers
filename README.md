@@ -5,6 +5,8 @@
 
 The customers resource is a representation of the customer accounts of the eCommerce site
 
+The app: https://nyu-customer-service-f20.us-south.cf.appdomain.cloud
+
 ## API Documentation
 ### URLs
 | HTTP Method | URL | Description | Return
