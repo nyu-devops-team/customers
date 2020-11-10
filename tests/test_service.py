@@ -236,6 +236,16 @@ class TestCustomers(unittest.TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_customers_reset(self):
+        """ Delete all customers """
+        self._create_customers(3)
+        delete_resp = self.app.delete("/customers/reset", content_type="application/json")
+        self.assertEqual(delete_resp.status_code, status.HTTP_204_NO_CONTENT)
+        
+        resp = self.app.get("/customers")
+        data = resp.get_json()
+        self.assertEqual(len(data), 0)
+
     def test_suspend_customer(self):
         """ Suspend an existing Customer """
         # create a customer to suspend
