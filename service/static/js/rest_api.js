@@ -127,29 +127,28 @@ $(function () {
             $("#search_results").append('<table class="table-striped" cellpadding="10">');
             var header = '<tr>'
             header += '<th style="width:10%">ID</th>'
-            header += '<th style="width:40%">Name</th>'
-            header += '<th style="width:40%">Category</th>'
-            header += '<th style="width:10%">Available</th></tr>'
+            header += '<th style="width:15%">First Name</th>'
+            header += '<th style="width:15%">Last Name</th>'
+            header += '<th style="width:20%">Email</th>'
+            header += '<th style="width:30%">Address</th>'
+            header += '<th style="width:10%">Active</th></tr>'
             $("#search_results").append(header);
             var firstCustomer = "";
             for(var i = 0; i < res.length; i++) {
                 var customer = res[i];
                 var row = "<tr><td>"+customer._id+"</td><td>"+customer.first_name+
                             "</td><td>"+customer.last_name+"</td><td>"+customer.email+
-                            "</td></tr>"+customer.address+"</td><td>"+customer.active;
+                            "</td><td>"+customer.address+"</td><td>"+customer.active+"</td></tr>";
                 $("#search_results").append(row);
                 if (i == 0) {
                     firstCustomer = customer;
                 }
             }
-
             $("#search_results").append('</table>');
-
             // copy the first result to the form
             if (firstCustomer != "") {
                 update_form_data(firstCustomer)
             }
-
             flash_message("Success")
         });
 
