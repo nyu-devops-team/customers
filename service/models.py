@@ -137,9 +137,9 @@ class Customer(db.Model):
         db.create_all()  # make our sqlalchemy tables
 
     @classmethod
-    def remove_all(cls):
+    def remove_all(cls):   # pragma: no cover
         """ Removes all customers from the database (use for testing)  """
-        db.session.query().delete()
+        db.session.query(cls).delete()  # delete the customer table
         db.session.commit()
 
     @classmethod
