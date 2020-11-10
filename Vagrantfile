@@ -68,6 +68,11 @@ Vagrant.configure(2) do |config|
     apt-get update
     apt-get install -y git zip tree python3 python3-pip python3-venv apt-transport-https
     apt-get -y autoremove
+
+    # Installing Chrome Headless and Selenium
+    apt-get install -y chromium-chromedriver python3-selenium
+    chromedriver --version
+
     # Create a Python3 Virtual Environment and Activate it in .profile
     sudo -H -u vagrant sh -c 'python3 -m venv ~/venv'
     sudo -H -u vagrant sh -c 'echo ". ~/venv/bin/activate" >> ~/.profile'
