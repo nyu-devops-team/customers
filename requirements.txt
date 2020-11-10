@@ -21,6 +21,12 @@ pinocchio==0.4.2
 httpie>=1.0.3
 mock==4.0.2
 
+# Behavor driven development
+behave==1.2.6
+selenium==3.141.0
+compare==0.2b0
+requests==2.24.0
+
 # Code coverage
 coverage==4.5.4
 codecov==2.1.10

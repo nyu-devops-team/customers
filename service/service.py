@@ -262,6 +262,15 @@ def delete_customers(customer_id):
     app.logger.info("Customer with ID [%s] has been deleted.", customer_id)
     return make_response("", status.HTTP_204_NO_CONTENT)
 
+######################################################################
+# DELETE ALL CUSTOMER DATA (for testing only)
+######################################################################
+@app.route('/customers/reset', methods=['DELETE'])
+def customers_reset():
+    """ Removes all pets from the database """
+    Customer.remove_all()
+    return make_response('', status.HTTP_204_NO_CONTENT)
+
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S

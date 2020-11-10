@@ -137,6 +137,12 @@ class Customer(db.Model):
         db.create_all()  # make our sqlalchemy tables
 
     @classmethod
+    def remove_all(cls):   # pragma: no cover
+        """ Removes all customers from the database (use for testing)  """
+        db.session.query(cls).delete()  # delete the customer table
+        db.session.commit()
+
+    @classmethod
     def all(cls):
         """Returns all of the customers in the database"""
         cls.logger.info("Processing all of the customers...")
