@@ -34,7 +34,7 @@ $(function () {
     }
 
     // ****************************************
-    // Create a Pet
+    // Create a Customer
     // ****************************************
 
     $("#create-btn").click(function () {
@@ -71,7 +71,7 @@ $(function () {
     });
 
     // ****************************************
-    // Retrieve a Pet
+    // Retrieve a Customer
     // ****************************************
 
     $("#retrieve-btn").click(function () {
@@ -105,6 +105,58 @@ $(function () {
     $("#clear-btn").click(function () {
         $("#customer_id").val("");
         clear_form_data()
+    });
+
+    // ****************************************
+    // Search for a Customer
+    // ****************************************
+
+    $("#search-btn").click(function () {
+        var queryString = ""
+
+        var ajax = $.ajax({
+            type: "GET",
+            url: "/customers?" + queryString,
+            contentType: "application/json",
+            data: ''
+        })
+
+        ajax.done(function(res){
+            //alert(res.toSource())
+            $("#search_results").empty();
+            $("#search_results").append('<table class="table-striped" cellpadding="10">');
+            var header = '<tr>'
+            header += '<th style="width:10%">ID</th>'
+            header += '<th style="width:40%">Name</th>'
+            header += '<th style="width:40%">Category</th>'
+            header += '<th style="width:10%">Available</th></tr>'
+            $("#search_results").append(header);
+            var firstCustomer = "";
+            for(var i = 0; i < res.length; i++) {
+                var customer = res[i];
+                var row = "<tr><td>"+customer._id+"</td><td>"+customer.first_name+
+                            "</td><td>"+customer.last_name+"</td><td>"+customer.email+
+                            "</td></tr>"+customer.address+"</td><td>"+customer.active;
+                $("#search_results").append(row);
+                if (i == 0) {
+                    firstCustomer = customer;
+                }
+            }
+
+            $("#search_results").append('</table>');
+
+            // copy the first result to the form
+            if (firstCustomer != "") {
+                update_form_data(firstCustomer)
+            }
+
+            flash_message("Success")
+        });
+
+        ajax.fail(function(res){
+            flash_message(res.responseJSON.message)
+        });
+
     });
 
 })
