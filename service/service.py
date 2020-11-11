@@ -167,7 +167,7 @@ def get_customers(customer_id):
     app.logger.info("Request for customer with id: %s", customer_id)
     customer = Customer.find(customer_id)
     if not customer:
-        raise NotFound("Customer with id '{}' was not found.".format(customer_id))
+        raise NotFound("Customer with the id was not found.")
 
     app.logger.info(
         "Returning customer: %s", customer.first_name + " " + customer.last_name
