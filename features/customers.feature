@@ -70,3 +70,18 @@ Scenario: Read a Customer
     And I should see "hellohi@gmail.com" in the "Email" field
     And I should see "2 Address St" in the "Address" field
     And I should see "True" in the "Active" dropdown
+
+Scenario: Update a Customer
+    When I visit the "Home Page"
+    And I set the "First_Name" to "Nick"
+    And I press the "search" button
+    Then I should see "Nick" in the "First_Name" field
+    And I should see "Vardaro" in the "Last_Name" field
+    When I change "Address" to "1 Lexington Ave"
+    And I press the "Update" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see "1 Lexington Ave" in the "Address" field
