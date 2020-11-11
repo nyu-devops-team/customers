@@ -50,3 +50,23 @@ Scenario: Create a Customer
     And I should see "ladygaga@gmail.com" in the "Email" field
     And I should see "888 Brooklyn St" in the "Address" field
     And I should see "True" in the "Active" dropdown
+
+Scenario: Read a Customer
+    When I visit the "Home Page"
+    And I set the "First_Name" to "Hello"
+    And I set the "Last_Name" to "Hi"
+    And I set the "Email" to "hellohi@gmail.com"
+    And I set the "Address" to "2 Address St"
+    And I select "True" in the "Active" dropdown
+    And I press the "Create" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    Then I should see "Hello" in the "First_Name" field
+    And I should see "Hi" in the "Last_Name" field
+    And I should see "hellohi@gmail.com" in the "Email" field
+    And I should see "2 Address St" in the "Address" field
+    And I should see "True" in the "Active" dropdown
