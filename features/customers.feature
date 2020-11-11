@@ -26,3 +26,27 @@ Scenario: List all customers
     And I should see "Justin" in the results
     And I should see "Rohan" in the results
     And I should see "Nancy" in the results
+
+Scenario: Create a Customer
+    When I visit the "Home Page"
+    And I set the "First_Name" to "Lady"
+    And I set the "Last_Name" to "Gaga"
+    And I set the "Email" to "ladygaga@gmail.com"
+    And I set the "Address" to "888 Brooklyn St"
+    And I select "True" in the "Active" dropdown
+    And I press the "Create" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    Then the "Id" field should be empty
+    And the "First_Name" field should be empty
+    And the "Last_Name" field should be empty
+    And the "Email" field should be empty
+    And the "Address" field should be empty
+    When I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see "Lady" in the "First_Name" field
+    And I should see "Gaga" in the "Last_Name" field
+    And I should see "ladygaga@gmail.com" in the "Email" field
+    And I should see "888 Brooklyn St" in the "Address" field
+    And I should see "True" in the "Active" dropdown
