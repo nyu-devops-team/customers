@@ -160,7 +160,7 @@ $(function () {
             var firstCustomer = "";
             for (var i = 0; i < res.length; i++) {
                 var customer = res[i];
-                var row = "<tr><td>" + customer._id + "</td><td>" + customer.first_name +
+                var row = "<tr><td>" + customer.id + "</td><td>" + customer.first_name +
                     "</td><td>" + customer.last_name + "</td><td>" + customer.email +
                     "</td><td>" + customer.address + "</td><td>" + customer.active + "</td></tr>";
                 $("#search_results").append(row);
