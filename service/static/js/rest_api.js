@@ -60,12 +60,12 @@ $(function () {
             data: JSON.stringify(data),
         });
 
-        ajax.done(function(res){
+        ajax.done(function (res) {
             update_form_data(res)
             flash_message("Success")
         });
 
-        ajax.fail(function(res){
+        ajax.fail(function (res) {
             flash_message(res.responseJSON.message)
         });
     });
@@ -124,13 +124,13 @@ $(function () {
             data: ''
         })
 
-        ajax.done(function(res){
+        ajax.done(function (res) {
             //alert(res.toSource())
             update_form_data(res)
             flash_message("Success")
         });
 
-        ajax.fail(function(res){
+        ajax.fail(function (res) {
             clear_form_data()
             flash_message(res.responseJSON.message)
         });
@@ -147,6 +147,30 @@ $(function () {
     });
 
     // ****************************************
+    // Delete a Customer
+    // ****************************************
+
+    $("#delete-btn").click(function () {
+
+        var customer_id = $("#customer_id").val();
+
+        var ajax = $.ajax({
+            type: "DELETE",
+            url: "/customers/" + customer_id,
+            contentType: "application/json",
+            data: '',
+        })
+
+        ajax.done(function (res) {
+            clear_form_data()
+            flash_message("Customer has been Deleted!")
+        });
+
+        ajax.fail(function (res) {
+            flash_message("Server error!")
+        });
+    });
+    // ****************************************
     // Search for a Customer
     // ****************************************
 
@@ -160,7 +184,7 @@ $(function () {
             data: ''
         })
 
-        ajax.done(function(res){
+        ajax.done(function (res) {
             //alert(res.toSource())
             $("#search_results").empty();
             $("#search_results").append('<table class="table-striped" cellpadding="10">');
@@ -173,11 +197,11 @@ $(function () {
             header += '<th style="width:10%">Active</th></tr>'
             $("#search_results").append(header);
             var firstCustomer = "";
-            for(var i = 0; i < res.length; i++) {
+            for (var i = 0; i < res.length; i++) {
                 var customer = res[i];
-                var row = "<tr><td>"+customer._id+"</td><td>"+customer.first_name+
-                            "</td><td>"+customer.last_name+"</td><td>"+customer.email+
-                            "</td><td>"+customer.address+"</td><td>"+customer.active+"</td></tr>";
+                var row = "<tr><td>" + customer._id + "</td><td>" + customer.first_name +
+                    "</td><td>" + customer.last_name + "</td><td>" + customer.email +
+                    "</td><td>" + customer.address + "</td><td>" + customer.active + "</td></tr>";
                 $("#search_results").append(row);
                 if (i == 0) {
                     firstCustomer = customer;
@@ -191,10 +215,11 @@ $(function () {
             flash_message("Success")
         });
 
-        ajax.fail(function(res){
+        ajax.fail(function (res) {
             flash_message(res.responseJSON.message)
         });
 
     });
+
 
 })
