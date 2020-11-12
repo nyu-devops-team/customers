@@ -30,7 +30,7 @@ def step_impl(context):
         data = {
             "first_name": row['first_name'],
             "last_name": row['last_name'],
-            "email": row['last_name'],
+            "email": row['email'],
             "address": row['address'],
             "active": row['active'] in ['True', 'true', '1']
             }
