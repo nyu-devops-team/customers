@@ -71,6 +71,45 @@ $(function () {
     });
 
     // ****************************************
+    // Update a Customer
+    // ****************************************
+
+    $("#update-btn").click(function () {
+        console.log("ppj")
+        var customer_id = $("#customer_id").val();
+        var first_name = $("#customer_first_name").val();
+        var last_name = $("#customer_last_name").val();
+        var email = $("#customer_email").val();
+        var address = $("#customer_address").val();
+        var active_customer = $("#active_customer").val() == "true";
+
+        var data = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "address": address,
+            "active": active_customer
+        };
+
+        var ajax = $.ajax({
+                type: "PUT",
+                url: "/customers/" + customer_id,
+                contentType: "application/json",
+                data: JSON.stringify(data)
+            })
+
+        ajax.done(function(res){
+            update_form_data(res)
+            flash_message("Success")
+        });
+
+        ajax.fail(function(res){
+            flash_message(res.responseJSON.message)
+        });
+
+    });
+
+    // ****************************************
     // Retrieve a Customer
     // ****************************************
 
