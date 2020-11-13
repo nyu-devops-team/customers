@@ -97,6 +97,6 @@ Scenario: Delete a Customer
 # And I press the "Clear" button
 # And I paste the "Id" field
 # And I press the "Delete" button
-# Then I should see the message "Customer has been Deleted!"
+# Then I should see the message "You successfully suspended the customer!"
 # When I press the "Retrieve" button
 # Then I should see the message "404 Not Found"

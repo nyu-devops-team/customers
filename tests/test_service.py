@@ -273,7 +273,7 @@ class TestCustomers(unittest.TestCase):
             "/customers/{}/suspend".format(suspended_customer["id"]),
             content_type="application/json",
         )
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        self.assertEqual(resp2.status_code, status.HTTP_200_OK)
 
     def test_suspend_not_available(self):
         """ Suspend a customer that is not available """
