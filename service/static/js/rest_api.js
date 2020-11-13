@@ -12,9 +12,9 @@ $(function () {
         $("#customer_email").val(res.email);
         $("#customer_address").val(res.address);
         if (res.active == true) {
-            $("#active_customer").val("true");
+            $("#customer_active").val("true");
         } else {
-            $("#active_customer").val("false");
+            $("#customer_active").val("false");
         }
     }
 
@@ -24,7 +24,7 @@ $(function () {
         $("#customer_last_name").val("");
         $("#customer_email").val("");
         $("#customer_address").val("");
-        $("#active_customer").val("");
+        $("#customer_active").val("");
     }
 
     // Updates the flash message area
@@ -43,14 +43,14 @@ $(function () {
         var last_name = $("#customer_last_name").val();
         var email = $("#customer_email").val();
         var address = $("#customer_address").val();
-        var active_customer = $("#active_customer").val() == "true";
+        var customer_active = $("#customer_active").val() == "true";
 
         var data = {
             "first_name": first_name,
             "last_name": last_name,
             "email": email,
             "address": address,
-            "active": active_customer
+            "active": customer_active
         };
 
         var ajax = $.ajax({
@@ -81,14 +81,14 @@ $(function () {
         var last_name = $("#customer_last_name").val();
         var email = $("#customer_email").val();
         var address = $("#customer_address").val();
-        var active_customer = $("#active_customer").val() == "true";
+        var customer_active = $("#customer_active").val() == "true";
 
         var data = {
             "first_name": first_name,
             "last_name": last_name,
             "email": email,
             "address": address,
-            "active": active_customer
+            "active": customer_active
         };
 
         var ajax = $.ajax({
@@ -113,26 +113,26 @@ $(function () {
     // Suspend a Customer
     // ****************************************
 
-    // $("#suspend-btn").click(function () {
-    //     var customer_id = $("#customer_id").val();
+    $("#suspend-btn").click(function () {
+        var customer_id = $("#customer_id").val();
 
 
-    //     var ajax = $.ajax({
-    //             type: "PUT",
-    //             url: "/customers/" + customer_id + "/suspend",
-    //             contentType: "application/json"
-    //         })
+        var ajax = $.ajax({
+                type: "PUT",
+                url: "/customers/" + customer_id + "/suspend",
+                contentType: "application/json"
+            })
 
-    //     ajax.done(function(res){
-    //         update_form_data(res)
-    //         flash_message("You successfully suspended the customer!")
-    //     });
+        ajax.done(function(res){
+            update_form_data(res)
+            flash_message("You successfully suspended the customer!")
+        });
 
-    //     ajax.fail(function(res){
-    //         flash_message(res.responseJSON.message)
-    //     });
+        ajax.fail(function(res){
+            flash_message(res.responseJSON.message)
+        });
 
-    // });
+    });
 
     
     // ****************************************
