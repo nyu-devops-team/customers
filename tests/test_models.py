@@ -24,7 +24,7 @@ class TestCustomerModel(unittest.TestCase):
         """ This runs once before the entire test suite """
         app.debug = False
         # Set up the test database
-        app.config["SQLALCHEMY_DATABASE_URI"] = app.config['TEST_DATABASE_URI']
+        app.config["SQLALCHEMY_DATABASE_URI"] = app.config['DATABASE_URI']
         Customer.init_db(app)
 
     @classmethod

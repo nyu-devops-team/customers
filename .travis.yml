@@ -10,10 +10,8 @@ addons:
 services:
   - postgresql
 
-# the TEST_DATABASE_URI is used by the unit testing and DATABASE_URI is used by BDD tests
 env:
   - DATABASE_URI=postgres://postgres:@localhost:5432/test
-  - TEST_DATABASE_URI=postgres://postgres:@localhost:5432/test
 
 # command to install dependencies
 install: 
