@@ -90,13 +90,4 @@ Scenario: Delete a Customer
     When I press the "Retrieve" button
     Then I should see the message "404 Not Found: Customer with the id was not found."
 
-# Scenario: Suspend a Customer
-# When I visit the "Home Page"
-# And I press the "search" button
-# And I copy the "Id" field
-# And I press the "Clear" button
-# And I paste the "Id" field
-# And I press the "Delete" button
-# Then I should see the message "Customer has been Deleted!"
-# When I press the "Retrieve" button
-# Then I should see the message "404 Not Found"
+
