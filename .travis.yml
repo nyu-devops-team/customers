@@ -28,7 +28,6 @@ before_script:
   
 # command to run tests
 script: 
-  - nosetests
   - behave
 
 after_success:
