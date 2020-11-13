@@ -234,10 +234,10 @@ def suspend_customers(customer_id):
     customer = Customer.find(customer_id)
     if not customer:
         raise NotFound("Customer with id '{}' was not found.".format(customer_id))
-    if not customer.active:
-        raise PreconditionFailed(
-            "Customer with id '{}' was already suspended.".format(customer_id)
-        )
+    # if not customer.active:
+    #     raise PreconditionFailed(
+    #         "Customer with id '{}' was already suspended.".format(customer_id)
+    #     )
     customer.active = False
     customer.update()
 

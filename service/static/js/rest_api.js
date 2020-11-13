@@ -110,6 +110,32 @@ $(function () {
     });
 
     // ****************************************
+    // Suspend a Customer
+    // ****************************************
+
+    // $("#suspend-btn").click(function () {
+    //     var customer_id = $("#customer_id").val();
+
+
+    //     var ajax = $.ajax({
+    //             type: "PUT",
+    //             url: "/customers/" + customer_id + "/suspend",
+    //             contentType: "application/json"
+    //         })
+
+    //     ajax.done(function(res){
+    //         update_form_data(res)
+    //         flash_message("You successfully suspended the customer!")
+    //     });
+
+    //     ajax.fail(function(res){
+    //         flash_message(res.responseJSON.message)
+    //     });
+
+    // });
+
+    
+    // ****************************************
     // Retrieve a Customer
     // ****************************************
 
