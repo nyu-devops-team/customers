@@ -34,7 +34,6 @@ class TestCustomers(unittest.TestCase):
         app.testing = True
 
         # setup the test database
-        app.config["SQLALCHEMY_DATABASE_URI"] = app.config['DATABASE_URI']
         init_db()
 
     @classmethod

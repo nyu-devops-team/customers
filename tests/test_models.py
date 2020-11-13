@@ -11,7 +11,7 @@ import unittest
 import os
 import json
 from service.models import Customer, DataValidationError, db
-from service import app
+from service.service import app, init_db
 
 ######################################################################
 #  C U S T O M E R   M O D E L   T E S T   C A S E S
@@ -24,8 +24,7 @@ class TestCustomerModel(unittest.TestCase):
         """ This runs once before the entire test suite """
         app.debug = False
         # Set up the test database
-        app.config["SQLALCHEMY_DATABASE_URI"] = app.config['DATABASE_URI']
-        Customer.init_db(app)
+        init_db()
 
     @classmethod
     def tearDownClass(cls):

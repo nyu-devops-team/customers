@@ -8,7 +8,7 @@ addons:
   chrome: stable
 
 services:
-  - postgresql
+  - postgresql  # we need a postgres server
 
 env:
   - DATABASE_URI=postgres://postgres:@localhost:5432/test
@@ -19,7 +19,7 @@ install:
   - pip3 install -r requirements.txt
 
 before_script:
-  - psql -c 'create database test;' -U postgres
+  - psql -c 'create database test;' -U postgres  # try to create a database
   - psql --version
   - chromedriver --version
   - gunicorn --log-level=debug --bind=127.0.0.1:5000 service:app &  # start a Web server in the background
@@ -27,15 +27,9 @@ before_script:
   - curl -I http://localhost:5000/  # make sure the service is up
   
 # command to run tests
-# script: 
-#   - nosetests
-#   - behave
-
 jobs:
   include:
-    - stage: unit_test
+    - stage: tests
       script: nosetests
+      after_success: codecov
     - script: behave
-
-after_success:
-  - codecov
