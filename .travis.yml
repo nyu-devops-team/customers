@@ -10,13 +10,15 @@ addons:
 services:
   - postgresql
 
+# the TEST_DATABASE_URI is used by the unit testing and DATABASE_URI is used by BDD tests
 env:
   - DATABASE_URI=postgres://postgres:@localhost:5432/test
+  - TEST_DATABASE_URI=postgres://postgres:@localhost:5432/test
 
 # command to install dependencies
 install: 
-  - "pip3 install -r requirements.txt"
   - sudo apt-get install -y chromium-chromedriver python3-selenium
+  - pip3 install -r requirements.txt
 
 before_script:
   - psql -c 'create database test;' -U postgres
@@ -28,6 +30,7 @@ before_script:
   
 # command to run tests
 script: 
+  - nosetests
   - behave
 
 after_success:

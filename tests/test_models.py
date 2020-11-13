@@ -13,16 +13,6 @@ import json
 from service.models import Customer, DataValidationError, db
 from service import app
 
-# DATABASE_URI = os.getenv("DATABASE_URI", "sqlite:///../db/test.db")
-DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
-)
-if 'VCAP_SERVICES' in os.environ:
-    vcap = json.loads(os.environ['VCAP_SERVICES'])
-    for item in vcap['user-provided']:
-        if item['name'] == "ElephantSQL-Test":
-            DATABASE_URI = item['credentials']['url']
-
 ######################################################################
 #  C U S T O M E R   M O D E L   T E S T   C A S E S
 ######################################################################
@@ -34,13 +24,13 @@ class TestCustomerModel(unittest.TestCase):
         """ This runs once before the entire test suite """
         app.debug = False
         # Set up the test database
-        app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+        app.config["SQLALCHEMY_DATABASE_URI"] = app.config['TEST_DATABASE_URI']
         Customer.init_db(app)
 
     @classmethod
     def tearDownClass(cls):
         """ This runs once after the entire test suite """
-        pass
+        db.session.close()
 
     def setUp(self):
         """ This runs before each test """

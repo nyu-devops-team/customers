@@ -10,6 +10,9 @@ import json
 DATABASE_URI = os.getenv(
     "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
 )
+TEST_DATABASE_URI = os.getenv(
+    "TEST_DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
+)
 
 # Secret for session management
 # SECRET_KEY = os.getenv("SECRET_KEY", "s3cr3t-key-shhhh")
@@ -20,10 +23,8 @@ if 'VCAP_SERVICES' in os.environ:
     for item in vcap['user-provided']:
         if item['name'] == "ElephantSQL":
             DATABASE_URI = item['credentials']['url']
+            TEST_DATABASE_URI = item['credentials']['url']
 
 # Configure SQLAlchemy
 SQLALCHEMY_DATABASE_URI = DATABASE_URI
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-TESTING = True
-DEBUG = True
