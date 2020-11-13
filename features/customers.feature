@@ -51,6 +51,19 @@ Scenario: Create a Customer
     And I should see "888 Brooklyn St" in the "Address" field
     And I should see "True" in the "Active" dropdown
 
+Scenario: Read a Customer
+    When I press the "search" button
+    And I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    Then I should see "Nick" in the "First_Name" field
+    And I should see "Vardaro" in the "Last_Name" field
+    And I should see "123 Brooklyn Ave" in the "Address" field
+    And I should see "nvar@gnyu.edu" in the "email" field
+    And I should see "True" in the "Active" dropdown
+
 Scenario: Update a Customer
     When I visit the "Home Page"
     And I set the "First_Name" to "Nick"
