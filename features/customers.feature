@@ -90,6 +90,7 @@ Scenario: Delete a Customer
     When I press the "Retrieve" button
     Then I should see the message "404 Not Found: Customer with the id was not found."
 
+
 Scenario: Suspend a Customer
     When I visit the "Home Page"
     And I press the "search" button
