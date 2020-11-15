@@ -16,3 +16,19 @@ applications:
   env:
     FLASK_APP : service:app
     FLASK_DEBUG : false
+
+- name: nyu-customer-service-f20-prod
+  path: .
+  instances: 2
+  memory: 64M
+  routes:
+  - route: nyu-customer-service-f20-prod.us-south.cf.appdomain.cloud
+  disk_quota: 1024M
+  buildpacks: 
+  - python_buildpack
+  timeout: 180
+  services:
+  - ElephantSQL-Prod
+  env:
+    FLASK_APP : service:app
+    FLASK_DEBUG : false
