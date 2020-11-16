@@ -71,6 +71,10 @@ Scenario: Update a Customer
     Then I should see "Nick" in the "First_Name" field
     And I should see "Vardaro" in the "Last_Name" field
     When I change "Address" to "1 Lexington Ave"
+    And I set the "First_Name" to "Bro"
+    And I set the "Last_Name" to "Seph"
+    And I set the "email" to "email@internet.com"
+    And I select "False" in the "Active" dropdown
     And I press the "Update" button
     Then I should see the message "Success"
     When I copy the "Id" field
@@ -78,6 +82,10 @@ Scenario: Update a Customer
     And I paste the "Id" field
     And I press the "Retrieve" button
     Then I should see "1 Lexington Ave" in the "Address" field
+    And I should see "Bro" in the "First_Name" field
+    And I should see "Seph" in the "Last_Name" field
+    And I should see "email@internet.com" in the "email" field
+    And I should see "False" in the "Active" dropdown
     
 Scenario: Delete a Customer
     When I visit the "Home Page"

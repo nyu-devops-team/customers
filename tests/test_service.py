@@ -21,6 +21,15 @@ from .customer_factory import CustomerFactory
 # Disable all but ciritcal erros suirng unittest
 logging.disable(logging.CRITICAL)
 
+DATABASE_URI = os.getenv(
+    "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
+)
+if 'VCAP_SERVICES' in os.environ:
+    vcap = json.loads(os.environ['VCAP_SERVICES'])
+    for item in vcap['user-provided']:
+        if item['name'] == "ElephantSQL-Test":
+            DATABASE_URI = item['credentials']['url']
+
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
@@ -34,6 +43,7 @@ class TestCustomers(unittest.TestCase):
         app.testing = True
 
         # setup the test database
+        app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
         init_db()
 
     @classmethod
