@@ -9,9 +9,8 @@ Background:
         | Nick          | Vardaro     | nvar@gnyu.edu  | 123 Brooklyn Ave   | True      |
         | Henry         | Ou          | hou@nyu.edu    | 888 Brooklyn St    | True      |
         | Justin        | Chiang      | jchi@gmail.com | 888 Brooklyn St    | True      |
-        | Rohan         | Raj         | rraj@gmail.com | 888 Brooklyn St    | False     |
         | Nancy         | Wen         | nwen@gmail.com | 100 Main St        | False     |
-
+        | Rohan         | Raj         | rraj@gmail.com | 888 Brooklyn St    | False     |
 
 Scenario: The server is running
     When I visit the "home page"
@@ -20,6 +19,7 @@ Scenario: The server is running
 
 Scenario: List all customers
     When I visit the "home page"
+    And I press the "Clear" button
     And I press the "search" button
     Then I should see "Nick" in the results
     And I should see "Henry" in the results
@@ -52,7 +52,9 @@ Scenario: Create a Customer
     And I should see "True" in the "Active" dropdown
 
 Scenario: Read a Customer
-    When I press the "search" button
+    When I visit the "Home Page" 
+    And I press the "Clear" button
+    And I press the "search" button
     And I copy the "Id" field
     And I press the "Clear" button
     And I paste the "Id" field
@@ -113,13 +115,14 @@ Scenario: Suspend a Customer
 
 Scenario: Query Customers by First Name
     When I visit the "Home Page"
+    And I press the "Clear" button
     And I set the "First_Name" to "Nick"
-    And I press the "search" button
+    And I press the "Search" button
     Then I should see all customers with "Nick" in the results
+    Then I should not see "Nancy" in the results
     And I should not see "Henry" in the results
     And I should not see "Justin" in the results
     And I should not see "Rohan" in the results
-    And I should not see "Nancy" in the results
          
 # Scenario: Query Customers by Last Name
 #     When I visit the "Home Page"

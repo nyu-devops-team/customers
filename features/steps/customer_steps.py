@@ -149,9 +149,9 @@ def step_impl(context, text_string):
 
 @then('I should not see "{text_string}" in the results')
 def step_impl(context, text_string):
-    # element = context.driver.find_element_by_id('search_results')
-    error_msg = "I should not see '%s' in '%s'" % (text_string, context.resp.text)
-    ensure(text_string in context.resp.text, False, error_msg)
+    element = context.driver.find_element_by_id('search_results')
+    error_msg = "I should not see '%s' in '%s'" % (text_string, element.text)
+    ensure(text_string in element.text, False, error_msg)
 
 
 ##################################################################
