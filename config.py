@@ -20,6 +20,8 @@ if 'VCAP_SERVICES' in os.environ:
     for item in vcap['user-provided']:
         if item['name'] == "ElephantSQL":
             DATABASE_URI = item['credentials']['url']
+        if item['name'] == "ElephantSQL-Prod":
+        	DATABASE_URI = item['credentials']['url']
 
 # Configure SQLAlchemy
 SQLALCHEMY_DATABASE_URI = DATABASE_URI
