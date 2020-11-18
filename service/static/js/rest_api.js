@@ -203,7 +203,25 @@ $(function () {
     $("#search-btn").click(function () {
         var queryString = ""
 
-        var ajax = $.ajax({
+        var first_name = $("#customer_first_name").val();
+        var last_name = $("#customer_last_name").val();
+        var email = $("#customer_email").val();
+        var address = $("#customer_address").val();
+        var customer_active = $("#customer_active").val() == "true";
+
+        if (first_name != "") {
+            queryString = "first_name=" + first_name;
+        } else if (last_name != "") {
+            queryString = "last_name=" + last_name;
+        } else if (email != "") {
+            queryString = "email=" + email;
+        } else if (address != "") {
+            queryString = "address=" + address;
+        } else if (customer_active != "") {
+            queryString = "active=" + customer_active;
+        }
+
+           var ajax = $.ajax({
             type: "GET",
             url: "/customers?" + queryString,
             contentType: "application/json",
