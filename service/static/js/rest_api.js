@@ -221,7 +221,7 @@ $(function () {
             queryString = "active=" + customer_active;
         }
 
-        var ajax = $.ajax({
+           var ajax = $.ajax({
             type: "GET",
             url: "/customers?" + queryString,
             contentType: "application/json",
