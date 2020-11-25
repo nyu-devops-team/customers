@@ -3,8 +3,8 @@
 applications:
 - name: nyu-customer-service-f20
   path: .
-  instances: 2
-  memory: 64M
+  instances: 1
+  memory: 512M
   routes:
   - route: nyu-customer-service-f20.us-south.cf.appdomain.cloud
   disk_quota: 1024M
@@ -19,8 +19,8 @@ applications:
 
 - name: nyu-customer-service-f20-prod
   path: .
-  instances: 2
-  memory: 64M
+  instances: 1
+  memory: 512M
   routes:
   - route: nyu-customer-service-f20-prod.us-south.cf.appdomain.cloud
   disk_quota: 1024M
