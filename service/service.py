@@ -203,3 +203,60 @@ def check_content_type(content_type):  # pragma: no cover
         return
     app.logger.error("Invalid Content-Type: %s", request.headers["Content-Type"])
     abort(415, "Content-Type must be {}".format(content_type))
+
+@api.route('/customers/<customer_id>')
+@api.param('customer_id', 'The Customer identifier')
+class CustomerResource(Resource):
+    """
+    CustomerResource class
+    Allows the manipulation of a single Customer
+    GET /customer{id} - Returns a Customer with the id
+    PUT /customer{id} - Update a Customer with the id
+    DELETE /customer{id} -  Deletes a Customer with the id
+    """
+
+    #------------------------------------------------------------------
+    # RETRIEVE A CUSTOMER
+    #------------------------------------------------------------------
+    @api.doc('get_customers')
+    @api.response(404, 'Customer not found')
+    @api.marshal_with(customer_model)
+    def get(self, customer_id):
+        """
+        Retrieve a single Customer
+        This endpoint will return a Customer based on it's id
+        """
+        app.logger.info("Request to Retrieve a customer with id [%s]", customer_id)
+        customer = Customer.find(customer_id)
+        if not customer:
+            api.abort(status.HTTP_404_NOT_FOUND, "Customer with id '{}' was not found.".format(customer_id))
+        return customer.serialize(), status.HTTP_200_OK
+
+######################################################################
+#  PATH: /customers
+######################################################################
+@api.route('/customers', strict_slashes=False)
+class CustomerCollection(Resource):
+    """ Handles all interactions with collections of Customers """
+    #------------------------------------------------------------------
+    # ADD A NEW CUSTOMER
+    #------------------------------------------------------------------
+    @api.doc('create_customers', security='apikey')
+    @api.expect(create_model)
+    @api.response(400, 'The posted data was not valid')
+    @api.response(201, 'Customer created successfully')
+    @api.marshal_with(customer_model, code=201)
+    @token_required
+    def post(self):
+        """
+        Creates a Customer
+        This endpoint will create a Customer based the data in the body that is posted
+        """
+        app.logger.info('Request to Create a Customer')
+        customer = Customer()
+        app.logger.debug('Payload = %s', api.payload)
+        customer.deserialize(api.payload)
+        customer.create()
+        app.logger.info('Customer with new id [%s] saved!', customer.id)
+        location_url = api.url_for(CustomerResource, customer_id=customer.id, _external=True)
+        return customer.serialize(), status.HTTP_201_CREATED, {'Location': location_url}
