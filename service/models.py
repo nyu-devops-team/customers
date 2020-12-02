@@ -204,7 +204,7 @@ class Customer(db.Model):
         return cls.query.filter(cls.email == email)
 
     @classmethod
-    def find_by_active(cls, active: bool = True):
+    def find_by_active(cls, active: bool):
         """Returns all Custom by their active status
         :param available: True for Customers that are active
         :type available: str
