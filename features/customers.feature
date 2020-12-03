@@ -1,21 +1,21 @@
-Feature: The customer service back-end
-    As a online store
-    I need a RESTful customer service
-    So that I can keep track of all my customer accounts
+# Feature: The customer service back-end
+#     As a online store
+#     I need a RESTful customer service
+#     So that I can keep track of all my customer accounts
 
-Background:
-    Given the following customers
-        | first_name    | last_name   | email          | address            | active    |
-        | Nick          | Vardaro     | nvar@gnyu.edu  | 123 Brooklyn Ave   | True      |
-        | Henry         | Ou          | hou@nyu.edu    | 888 Brooklyn St    | True      |
-        | Justin        | Chiang      | jchi@gmail.com | 888 Brooklyn St    | True      |
-        | Nancy         | Wen         | nwen@gmail.com | 100 Main St        | False     |
-        | Rohan         | Raj         | rraj@gmail.com | 888 Brooklyn St    | False     |
+# Background:
+#     Given the following customers
+#         | first_name    | last_name   | email          | address            | active    |
+#         | Nick          | Vardaro     | nvar@gnyu.edu  | 123 Brooklyn Ave   | True      |
+#         | Henry         | Ou          | hou@nyu.edu    | 888 Brooklyn St    | True      |
+#         | Justin        | Chiang      | jchi@gmail.com | 888 Brooklyn St    | True      |
+#         | Nancy         | Wen         | nwen@gmail.com | 100 Main St        | False     |
+#         | Rohan         | Raj         | rraj@gmail.com | 888 Brooklyn St    | False     |
 
-Scenario: The server is running
-    When I visit the "home page"
-    Then I should see "Customer Demo RESTful Service" in the title
-    And  I should not see "404 Not Found"
+# Scenario: The server is running
+#     When I visit the "home page"
+#     Then I should see "Customer Demo RESTful Service" in the title
+#     And  I should not see "404 Not Found"
 
 # Scenario: List all customers
 #     When I visit the "home page"
