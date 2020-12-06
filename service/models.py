@@ -119,7 +119,7 @@ class Customer(db.Model):
 
     def save(self):
         """ Saves a Customer in the database """
-        if self.name is None:   # name is the only required field
+        if not self.first_name and not self.last_name:   # name is the only required field
             raise DataValidationError('name attribute is not set')
         if self.id:
             self.update()

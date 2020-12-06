@@ -254,7 +254,7 @@ class CustomerResource(Resource):
         data = api.payload
         customer.deserialize(data)
         customer.id = customer_id
-        # customer.save()
+        customer.save()
         return customer.serialize(), status.HTTP_200_OK
 
 ######################################################################
