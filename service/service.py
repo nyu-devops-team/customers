@@ -131,7 +131,7 @@ api = Api(app,
           default_label='Customer operations',
           doc='/apidocs', # default also could use doc='/apidocs/'
           authorizations=authorizations,
-          prefix='/api'
+          # prefix=''
          )
 
 # Define the model so that the docs reflect what can be sent
