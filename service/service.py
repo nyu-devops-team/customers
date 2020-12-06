@@ -152,7 +152,7 @@ customer_model = api.inherit(
     'CustomerModel', 
     create_model,
     {
-        '_id': fields.String(readOnly=True,
+        'id': fields.String(readOnly=True,
                             description='The unique id assigned internally by service'),
     }
 )
