@@ -233,14 +233,13 @@ class CustomerResource(Resource):
         return customer.serialize(), status.HTTP_200_OK
 
     #------------------------------------------------------------------
-    # UPDATE AN EXISTING PET
+    # UPDATE AN EXISTING CUSTOMER
     #------------------------------------------------------------------
     @api.doc('update_customers', security='apikey')
     @api.response(404, 'Customer not found')
     @api.response(400, 'The posted Customer data was not valid')
     @api.expect(customer_model)
     @api.marshal_with(customer_model)
-    @token_required
     def put(self, customer_id):
         """
         Update a Customer
@@ -264,6 +263,33 @@ class CustomerResource(Resource):
 class CustomerCollection(Resource):
     """ Handles all interactions with collections of Customers """
     #------------------------------------------------------------------
+    # LIST ALL CUSTOMERS
+    #------------------------------------------------------------------
+    @api.doc('list_customers')
+    # @api.expect(customer_args, validate=True)
+    @api.marshal_list_with(customer_model)
+    def get(self):
+        """ Returns all of the Customers """
+        app.logger.info('Request to list Customers...')
+        customers = []
+        args = customer_args.parse_args()
+        # if args['category']:
+        #     app.logger.info('Filtering by category: %s', args['category'])
+        #     customers = Customer.find_by_category(args['category'])
+        # elif args['name']:
+        #     app.logger.info('Filtering by name: %s', args['name'])
+        #     customers = Customer.find_by_name(args['name'])
+        # elif args['available'] is not None:
+        #     app.logger.info('Filtering by availability: %s', args['available'])
+        #     customers = Customer.find_by_availability(args['available'])
+        # else:
+        customers = Customer.all()
+
+        app.logger.info('[%s] Customers returned', len(customers))
+        results = [customer.serialize() for customer in customers]
+        return results, status.HTTP_200_OK
+
+    #------------------------------------------------------------------
     # ADD A NEW CUSTOMER
     #------------------------------------------------------------------
     @api.doc('create_customers', security='apikey')
@@ -271,7 +297,6 @@ class CustomerCollection(Resource):
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Customer created successfully')
     @api.marshal_with(customer_model, code=201)
-    @token_required
     def post(self):
         """
         Creates a Customer
@@ -285,3 +310,5 @@ class CustomerCollection(Resource):
         app.logger.info('Customer with new id [%s] saved!', customer.id)
         location_url = api.url_for(CustomerResource, customer_id=customer.id, _external=True)
         return customer.serialize(), status.HTTP_201_CREATED, {'Location': location_url}
+
+    
