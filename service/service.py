@@ -130,8 +130,7 @@ api = Api(app,
           default='customers',
           default_label='Customer operations',
           doc='/apidocs', # default also could use doc='/apidocs/'
-          authorizations=authorizations,
-          prefix='/api'
+         #   authorizations=authorizations
           )
 
 # Define the model so that the docs reflect what can be sent
@@ -152,7 +151,7 @@ customer_model = api.inherit(
     'CustomerModel', 
     create_model,
     {
-        '_id': fields.String(readOnly=True,
+        'id': fields.String(readOnly=True,
                             description='The unique id assigned internally by service'),
     }
 )
@@ -246,7 +245,6 @@ class CustomerCollection(Resource):
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Customer created successfully')
     @api.marshal_with(customer_model, code=201)
-    @token_required
     def post(self):
         """
         Creates a Customer

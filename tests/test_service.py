@@ -56,6 +56,7 @@ class TestCustomers(unittest.TestCase):
         db.drop_all()  # clean the last tests
         db.create_all()  # create new tables
         self.app = app.test_client()
+        self.headers = {'X-Api-Key': app.config['API_KEY']}
 
     def tearDown(self):
         """ This runs after each test """
@@ -96,106 +97,109 @@ class TestCustomers(unittest.TestCase):
     #     data = resp.get_json()
     #     self.assertEqual(len(data), 3)
 
-    # def test_get_customer(self):
-    #     """ Get a single Customer """
-    #     # get the id of a customer
-    #     test_customer = self._create_customers(1)[0]
-    #     resp = self.app.get(
-    #         "/customers/{}".format(test_customer.id), content_type="application/json"
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     data = resp.get_json()
-    #     self.assertEqual(data["last_name"], test_customer.last_name)
+    def test_get_customer(self):
+        """ Get a single Customer """
+        # get the id of a customer
+        test_customer = self._create_customers(1)[0]
+        resp = self.app.get(
+            "/customers/{}".format(test_customer.id),
+            content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["last_name"], test_customer.last_name)
 
     # def test_get_customer_not_found(self):
     #     """ Get a Customer thats not found """
     #     resp = self.app.get("/customers/0")
     #     self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-    # def _create_customers(self, count):
-    #     """ Factory method to create customers in bulk """
-    #     customers = []
-    #     for _ in range(count):
-    #         test_customer = CustomerFactory()
-    #         resp = self.app.post(
-    #             "/customers",
-    #             json=test_customer.serialize(),
-    #             content_type="application/json",
-    #         )
-    #         self.assertEqual(
-    #             resp.status_code,
-    #             status.HTTP_201_CREATED,
-    #             "Could not create test customer",
-    #         )
-    #         new_customer = resp.get_json()
-    #         test_customer.id = new_customer["id"]
-    #         customers.append(test_customer)
-    #     return customers
+    def _create_customers(self, count):
+        """ Factory method to create customers in bulk """
+        customers = []
+        for _ in range(count):
+            test_customer = CustomerFactory()
+            resp = self.app.post(
+                "/customers",
+                json=test_customer.serialize(),
+                content_type="application/json",
+                headers = self.headers
+            )
+            self.assertEqual(
+                resp.status_code,
+                status.HTTP_201_CREATED,
+                "Could not create test customer",
+            )
+            new_customer = resp.get_json()
+            test_customer.id = new_customer["id"]
+            customers.append(test_customer)
+        return customers
 
-    # def test_create_customer(self):
-    #     """ Create a new Customer """
-    #     test_customer = CustomerFactory()
-    #     resp = self.app.post(
-    #         "/customers",
-    #         json=test_customer.serialize(),
-    #         content_type="application/json",
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
-    #     # Make sure location header is set
-    #     location = resp.headers.get("Location", None)
-    #     self.assertTrue(location is not None)
-    #     # Check the data is correct
-    #     new_customer = resp.get_json()
-    #     # self.assertEqual(new_customer["name"], test_customer.name, "Names do not match")
-    #     self.assertEqual(
-    #         new_customer["first_name"],
-    #         test_customer.first_name,
-    #         "first_name does not match",
-    #     )
-    #     self.assertEqual(
-    #         new_customer["last_name"],
-    #         test_customer.last_name,
-    #         "last_name does not match",
-    #     )
-    #     self.assertEqual(
-    #         new_customer["email"], test_customer.email, "email does not match"
-    #     )
-    #     self.assertEqual(
-    #         new_customer["address"], test_customer.address, "address does not match"
-    #     )
-    #     self.assertEqual(
-    #         new_customer["active"], test_customer.active, "active does not match"
-    #     )
-    #     # Check that the location header was correct
-    #     resp = self.app.get(location, content_type="application/json")
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     new_customer = resp.get_json()
-    #     # self.assertEqual(new_customer["name"], test_customer.name, "Names do not match")
-    #     # self.assertEqual(
-    #     #     new_customer["category"], test_customer.category, "Categories do not match"
-    #     # )
-    #     # self.assertEqual(
-    #     #     new_customer["available"], test_customer.available, "Availability does not match"
-    #     # )
-    #     self.assertEqual(
-    #         new_customer["first_name"],
-    #         test_customer.first_name,
-    #         "first_name does not match",
-    #     )
-    #     self.assertEqual(
-    #         new_customer["last_name"],
-    #         test_customer.last_name,
-    #         "last_name does not match",
-    #     )
-    #     self.assertEqual(
-    #         new_customer["email"], test_customer.email, "email does not match"
-    #     )
-    #     self.assertEqual(
-    #         new_customer["address"], test_customer.address, "address does not match"
-    #     )
-    #     self.assertEqual(
-    #         new_customer["active"], test_customer.active, "active does not match"
-    #     )
+    def test_create_customer(self):
+        """ Create a new Customer """
+        test_customer = CustomerFactory()
+        resp = self.app.post(
+            "/customers",
+            json=test_customer.serialize(),
+            content_type="application/json",
+            headers = self.headers
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        # Make sure location header is set
+        location = resp.headers.get("Location", None)
+        self.assertTrue(location is not None)
+        # Check the data is correct
+        new_customer = resp.get_json()
+        # self.assertEqual(new_customer["name"], test_customer.name, "Names do not match")
+        self.assertEqual(
+            new_customer["first_name"],
+            test_customer.first_name,
+            "first_name does not match",
+        )
+        self.assertEqual(
+            new_customer["last_name"],
+            test_customer.last_name,
+            "last_name does not match",
+        )
+        self.assertEqual(
+            new_customer["email"], test_customer.email, "email does not match"
+        )
+        self.assertEqual(
+            new_customer["address"], test_customer.address, "address does not match"
+        )
+        self.assertEqual(
+            new_customer["active"], test_customer.active, "active does not match"
+        )
+        # Check that the location header was correct
+        resp = self.app.get(location, content_type="application/json")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        new_customer = resp.get_json()
+        # self.assertEqual(new_customer["name"], test_customer.name, "Names do not match")
+        # self.assertEqual(
+        #     new_customer["category"], test_customer.category, "Categories do not match"
+        # )
+        # self.assertEqual(
+        #     new_customer["available"], test_customer.available, "Availability does not match"
+        # )
+        self.assertEqual(
+            new_customer["first_name"],
+            test_customer.first_name,
+            "first_name does not match",
+        )
+        self.assertEqual(
+            new_customer["last_name"],
+            test_customer.last_name,
+            "last_name does not match",
+        )
+        self.assertEqual(
+            new_customer["email"], test_customer.email, "email does not match"
+        )
+        self.assertEqual(
+            new_customer["address"], test_customer.address, "address does not match"
+        )
+        self.assertEqual(
+            new_customer["active"], test_customer.active, "active does not match"
+        )
 
     # def test_update_customer(self):
     #     """ Update an existing Customer """
