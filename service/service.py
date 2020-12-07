@@ -239,7 +239,6 @@ class CustomerResource(Resource):
     @api.response(400, 'The posted Customer data was not valid')
     @api.expect(customer_model)
     @api.marshal_with(customer_model)
-    @token_required
     def put(self, customer_id):
         """
         Update a Customer
