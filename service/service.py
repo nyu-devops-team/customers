@@ -132,7 +132,7 @@ api = Api(app,
           doc='/apidocs', # default also could use doc='/apidocs/'
           authorizations=authorizations,
           prefix='/api'
-         )
+          )
 
 # Define the model so that the docs reflect what can be sent
 create_model = api.model('Customer', {
