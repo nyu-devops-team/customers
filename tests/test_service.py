@@ -201,9 +201,6 @@ class TestCustomers(unittest.TestCase):
             new_customer["active"], test_customer.active, "active does not match"
         )
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     def test_update_customer(self):
         """ Update an existing Customer """
         # create a customer to update
@@ -229,9 +226,6 @@ class TestCustomers(unittest.TestCase):
         updated_customer = resp.get_json()
         self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
->>>>>>> master-restplus
-=======
->>>>>>> c5282739ba496aa00bf2046e840ed06ab8b5eca0
     # def test_delete_a_customer(self):
     #     """ Delete a Customer """
     #     test_customer = self._create_customers(1)[0]
