@@ -287,85 +287,85 @@ class TestCustomers(unittest.TestCase):
     #     )
     #     self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-    # def test_query_customer_list_by_first_name(self):
-    #     """ Query Customers by first name """
-    #     customers = self._create_customers(10)
-    #     test_first_name = customers[0].first_name
-    #     resp = self.app.get(
-    #         "/customers", query_string="first_name={}".format(test_first_name)
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     data = resp.get_json()
-    #     first_name_customers = [
-    #         customer for customer in data if customer["first_name"] == test_first_name
-    #     ]
-    #     # check the data just to be sure
-    #     for customer in first_name_customers:
-    #         self.assertEqual(customer["first_name"], test_first_name)
+    def test_query_customer_list_by_first_name(self):
+        """ Query Customers by first name """
+        customers = self._create_customers(10)
+        test_first_name = customers[0].first_name
+        resp = self.app.get(
+            "/customers", query_string="first_name={}".format(test_first_name)
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        first_name_customers = [
+            customer for customer in data if customer["first_name"] == test_first_name
+        ]
+        # check the data just to be sure
+        for customer in first_name_customers:
+            self.assertEqual(customer["first_name"], test_first_name)
 
-    # def test_query_customer_list_by_last_name(self):
-    #     """ Query Customers by last name """
-    #     customers = self._create_customers(10)
-    #     test_last_name = customers[0].last_name
-    #     resp = self.app.get(
-    #         "/customers", query_string="last_name={}".format(test_last_name)
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     data = resp.get_json()
-    #     last_name_customers = [
-    #         customer for customer in data if customer["last_name"] == test_last_name
-    #     ]
-    #     # check the data just to be sure
-    #     for customer in last_name_customers:
-    #         self.assertEqual(customer["last_name"], test_last_name)
+    def test_query_customer_list_by_last_name(self):
+        """ Query Customers by last name """
+        customers = self._create_customers(10)
+        test_last_name = customers[0].last_name
+        resp = self.app.get(
+            "/customers", query_string="last_name={}".format(test_last_name)
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        last_name_customers = [
+            customer for customer in data if customer["last_name"] == test_last_name
+        ]
+        # check the data just to be sure
+        for customer in last_name_customers:
+            self.assertEqual(customer["last_name"], test_last_name)
 
-    # def test_query_customer_list_by_address(self):
-    #     """ Query Customers by address """
-    #     customers = self._create_customers(10)
-    #     test_address = customers[0].address
-    #     resp = self.app.get(
-    #         "/customers", query_string="address={}".format(test_address)
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     data = resp.get_json()
-    #     address_customers = [
-    #         customer for customer in data if customer["address"] == test_address
-    #     ]
-    #     # check the data just to be sure
-    #     for customer in address_customers:
-    #         self.assertEqual(customer["address"], test_address)
+    def test_query_customer_list_by_address(self):
+        """ Query Customers by address """
+        customers = self._create_customers(10)
+        test_address = customers[0].address
+        resp = self.app.get(
+            "/customers", query_string="address={}".format(test_address)
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        address_customers = [
+            customer for customer in data if customer["address"] == test_address
+        ]
+        # check the data just to be sure
+        for customer in address_customers:
+            self.assertEqual(customer["address"], test_address)
 
-    # def test_query_customer_list_by_email(self):
-    #     """ Query Customers by email """
-    #     customers = self._create_customers(10)
-    #     test_email = customers[0].email
-    #     resp = self.app.get("/customers", query_string="email={}".format(test_email))
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     data = resp.get_json()
-    #     email_customers = [
-    #         customer for customer in data if customer["email"] == test_email
-    #     ]
-    #     # check the data just to be sure
-    #     for customer in email_customers:
-    #         self.assertEqual(customer["email"], test_email)
+    def test_query_customer_list_by_email(self):
+        """ Query Customers by email """
+        customers = self._create_customers(10)
+        test_email = customers[0].email
+        resp = self.app.get("/customers", query_string="email={}".format(test_email))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        email_customers = [
+            customer for customer in data if customer["email"] == test_email
+        ]
+        # check the data just to be sure
+        for customer in email_customers:
+            self.assertEqual(customer["email"], test_email)
 
-    # def test_query_customer_list_by_active(self):
-    #     """ Query Customers by active """
-    #     customers = self._create_customers(10)
-    #     test_active = customers[0].active
-    #     resp = self.app.get("/customers", query_string="active={}".format(test_active))
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     data = resp.get_json()
-    #     active_customers = [
-    #         customer for customer in data if customer["active"] == test_active
-    #     ]
-    #     # check the data just to be sure
-    #     for customer in active_customers:
-    #         self.assertEqual(customer["active"], test_active)
+    def test_query_customer_list_by_active(self):
+        """ Query Customers by active """
+        customers = self._create_customers(10)
+        test_active = customers[0].active
+        resp = self.app.get("/customers", query_string="active={}".format(test_active))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        active_customers = [
+            customer for customer in data if customer["active"] == test_active
+        ]
+        # check the data just to be sure
+        for customer in active_customers:
+            self.assertEqual(customer["active"], test_active)
 
-    # def test_method_not_supported(self):
-    #     resp = self.app.put('/customers')
-    #     self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+    def test_method_not_supported(self):
+        resp = self.app.put('/customers')
+        self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # @mock.patch('service.service.Customer.all')
     # def test_search_bad_data(self, customer_find_mock):
