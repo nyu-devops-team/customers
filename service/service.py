@@ -268,19 +268,25 @@ class CustomerCollection(Resource):
     # @api.expect(customer_args, validate=True)
     @api.marshal_list_with(customer_model)
     def get(self):
-        """ Returns all of the Customers """
+        """ Returns all of the Customers unless a query parameter is specified """
         app.logger.info('Request to list Customers...')
         customers = []
         args = customer_args.parse_args()
-        if args['category']:
-            app.logger.info('Filtering by category: %s', args['category'])
-            customers = Customer.find_by_category(args['category'])
-        elif args['name']:
-            app.logger.info('Filtering by name: %s', args['name'])
-            customers = Customer.find_by_name(args['name'])
-        elif args['available'] is not None:
-            app.logger.info('Filtering by availability: %s', args['available'])
-            customers = Customer.find_by_availability(args['available'])
+        if args['last_name']:
+            app.logger.info('Filtering by last name: %s', args['last_name'])
+            customers = Customer.find_by_last_name(args['last_name'])
+        elif args['first_name']:
+            app.logger.info('Filtering by first name: %s', args['first_name'])
+            customers = Customer.find_by_first_name(args['first_name'])
+        elif args['email']:
+            app.logger.info('Filtering by email: %s', args['email'])
+            customers = Customer.find_by_email(args['email'])
+        elif args['address']:
+            app.logger.info('Filtering by address: %s', args['address'])
+            customers = Customer.find_by_address(args['address'])
+        elif args['active'] is not None:
+            app.logger.info('Filtering by active: %s', args['active'])
+            customers = Customer.find_by_active(args['active'])
         else:
             customers = Customer.all()
 
