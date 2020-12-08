@@ -130,8 +130,8 @@ api = Api(app,
           default='customers',
           default_label='Customer operations',
           doc='/apidocs', # default also could use doc='/apidocs/'
-         #   authorizations=authorizations
-          )
+          authorizations=authorizations
+        )
 
 # Define the model so that the docs reflect what can be sent
 create_model = api.model('Customer', {
@@ -179,7 +179,6 @@ def init_db():
     global app
     Customer.init_db(app)
 
-
 def check_content_type(content_type):  # pragma: no cover
     """ Checks that the media type is correct """
     if request.headers["Content-Type"] == content_type:
@@ -197,7 +196,6 @@ class CustomerResource(Resource):
     PUT /customer{id} - Update a Customer with the id
     DELETE /customer{id} -  Deletes a Customer with the id
     """
-
     #------------------------------------------------------------------
     # RETRIEVE A CUSTOMER
     #------------------------------------------------------------------
@@ -289,4 +287,8 @@ class SuspendResource(Resource):
         customer.active = False
         customer.update()
         app.logger.info("Customer with ID [%s] suspended.", customer.id)
+<<<<<<< HEAD
         return customer.serialize(), status.HTTP_200_OK 
+=======
+        return customer.serialize(), status.HTTP_200_OK
+>>>>>>> 154b1b1b0de444d446e60786d3ec6d571c592bd3
