@@ -166,22 +166,6 @@ customer_args.add_argument('address', type=str, required=False, help='List Custo
 customer_args.add_argument('active', type=inputs.boolean, required=False, help='List Customers by availability')
 
 ######################################################################
-# Authorization Decorator
-######################################################################
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'X-Api-Key' in request.headers:
-            token = request.headers['X-Api-Key']
-
-        if app.config.get('API_KEY') and app.config['API_KEY'] == token:
-            return f(*args, **kwargs)
-        else:
-            return {'message': 'Invalid or missing token'}, 401
-    return decorated
-
-######################################################################
 # Function to generate a random API key (good for testing)
 ######################################################################
 def generate_apikey():
@@ -246,7 +230,6 @@ class CustomerCollection(Resource):
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Customer created successfully')
     @api.marshal_with(customer_model, code=201)
-    @token_required
     def post(self):
         """
         Creates a Customer
@@ -260,3 +243,27 @@ class CustomerCollection(Resource):
         app.logger.info('Customer with new id [%s] saved!', customer.id)
         location_url = api.url_for(CustomerResource, customer_id=customer.id, _external=True)
         return customer.serialize(), status.HTTP_201_CREATED, {'Location': location_url}
+
+######################################################################
+#  PATH: /customers/{customer_id}/suspend
+######################################################################
+@api.route('/customers/<customer_id>/suspend')
+@api.param('customer_id', 'Customer Identifier')
+class SuspendResource(Resource):
+    """ Suspend Action on a Customer"""
+    @api.doc('suspend_customers')
+    @api.response(404, 'Customer not found')
+    @api.response(200, 'Success - action completed')
+    def put(self, customer_id):
+        """
+        Suspend a Customer
+        This endpoint will suspend a customer based on its ID
+        """
+        app.logger.info("Request to suspend customer with id: %s", customer_id)
+        customer = Customer.find(customer_id)
+        if not customer:
+            raise NotFound("Cus...tomer with id '{}' was not found.".format(customer_id))
+        customer.active = False
+        customer.update()
+        app.logger.info("Customer with ID [%s] suspended.", customer.id)
+        return customer.serialize(), status.HTTP_200_OK 
