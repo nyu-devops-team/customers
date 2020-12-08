@@ -252,42 +252,42 @@ class TestCustomers(unittest.TestCase):
     #     data = resp.get_json()
     #     self.assertEqual(len(data), 0)
 
-    # def test_suspend_customer(self):
-    #     """ Suspend an existing Customer """
-    #     # create a customer to suspend
-    #     test_customer = CustomerFactory()
-    #     test_customer.active = 1
-    #     resp = self.app.post(
-    #         "/customers",
-    #         json=test_customer.serialize(),
-    #         content_type="application/json",
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+    def test_suspend_customer(self):
+        """ Suspend an existing Customer """
+        # create a customer to suspend
+        test_customer = CustomerFactory()
+        test_customer.active = 1
+        resp = self.app.post(
+            "/customers",
+            json=test_customer.serialize(),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
-    #     # suspend the customer
-    #     new_customer = resp.get_json()
-    #     resp = self.app.put(
-    #         "/customers/{}/suspend".format(new_customer["id"]),
-    #         content_type="application/json",
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        # suspend the customer
+        new_customer = resp.get_json()
+        resp = self.app.put(
+            "/customers/{}/suspend".format(new_customer["id"]),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
-    #     # attempt to resuspend the customer
-    #     suspended_customer = resp.get_json()
-    #     self.assertEqual(suspended_customer["active"], False)
-    #     resp2 = self.app.put(
-    #         "/customers/{}/suspend".format(suspended_customer["id"]),
-    #         content_type="application/json",
-    #     )
-    #     self.assertEqual(resp2.status_code, status.HTTP_200_OK)
+        # attempt to resuspend the customer
+        suspended_customer = resp.get_json()
+        self.assertEqual(suspended_customer["active"], False)
+        resp2 = self.app.put(
+            "/customers/{}/suspend".format(suspended_customer["id"]),
+            content_type="application/json",
+        )
+        self.assertEqual(resp2.status_code, status.HTTP_200_OK)
 
-    # def test_suspend_not_available(self):
-    #     """ Suspend a customer that is not available """
-    #     resp = self.app.put(
-    #         "/customers/{}/suspend".format(0),
-    #         content_type="application/json",
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+    def test_suspend_not_available(self):
+        """ Suspend a customer that is not available """
+        resp = self.app.put(
+            "/customers/{}/suspend".format(0),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_query_customer_list_by_first_name(self):
         """ Query Customers by first name """
