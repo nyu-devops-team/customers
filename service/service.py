@@ -196,7 +196,6 @@ def init_db():
     global app
     Customer.init_db(app)
 
-
 def check_content_type(content_type):  # pragma: no cover
     """ Checks that the media type is correct """
     if request.headers["Content-Type"] == content_type:
@@ -214,7 +213,6 @@ class CustomerResource(Resource):
     PUT /customer{id} - Update a Customer with the id
     DELETE /customer{id} -  Deletes a Customer with the id
     """
-
     #------------------------------------------------------------------
     # RETRIEVE A CUSTOMER
     #------------------------------------------------------------------
@@ -260,3 +258,27 @@ class CustomerCollection(Resource):
         app.logger.info('Customer with new id [%s] saved!', customer.id)
         location_url = api.url_for(CustomerResource, customer_id=customer.id, _external=True)
         return customer.serialize(), status.HTTP_201_CREATED, {'Location': location_url}
+
+######################################################################
+#  PATH: /customers/{customer_id}/suspend
+######################################################################
+@api.route('/customers/<customer_id>/suspend')
+@api.param('customer_id', 'Customer Identifier')
+class SuspendResource(Resource):
+    """ Suspend Action on a Customer"""
+    @api.doc('suspend_customers')
+    @api.response(404, 'Customer not found')
+    @api.response(200, 'Success - action completed')
+    def put(self, customer_id):
+        """
+        Suspend a Customer
+        This endpoint will suspend a customer based on its ID
+        """
+        app.logger.info("Request to suspend customer with id: %s", customer_id)
+        customer = Customer.find(customer_id)
+        if not customer:
+            raise NotFound("Cus...tomer with id '{}' was not found.".format(customer_id))
+        customer.active = False
+        customer.update()
+        app.logger.info("Customer with ID [%s] suspended.", customer.id)
+        return customer.serialize(), status.HTTP_200_OK
