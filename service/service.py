@@ -130,9 +130,8 @@ api = Api(app,
           default='customers',
           default_label='Customer operations',
           doc='/apidocs', # default also could use doc='/apidocs/'
-          authorizations=authorizations,
-          # prefix=''
-         )
+          authorizations=authorizations
+          )
 
 # Define the model so that the docs reflect what can be sent
 create_model = api.model('Customer', {
@@ -166,22 +165,6 @@ customer_args.add_argument('address', type=str, required=False, help='List Custo
 customer_args.add_argument('active', type=inputs.boolean, required=False, help='List Customers by availability')
 
 ######################################################################
-# Authorization Decorator
-######################################################################
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'X-Api-Key' in request.headers:
-            token = request.headers['X-Api-Key']
-
-        if app.config.get('API_KEY') and app.config['API_KEY'] == token:
-            return f(*args, **kwargs)
-        else:
-            return {'message': 'Invalid or missing token'}, 401
-    return decorated
-
-######################################################################
 # Function to generate a random API key (good for testing)
 ######################################################################
 def generate_apikey():
@@ -195,6 +178,7 @@ def init_db():
     """ Initialies the SQLAlchemy app """
     global app
     Customer.init_db(app)
+
 
 def check_content_type(content_type):  # pragma: no cover
     """ Checks that the media type is correct """
@@ -213,6 +197,7 @@ class CustomerResource(Resource):
     PUT /customer{id} - Update a Customer with the id
     DELETE /customer{id} -  Deletes a Customer with the id
     """
+
     #------------------------------------------------------------------
     # RETRIEVE A CUSTOMER
     #------------------------------------------------------------------
@@ -230,6 +215,30 @@ class CustomerResource(Resource):
             api.abort(status.HTTP_404_NOT_FOUND, "Customer with id '{}' was not found.".format(customer_id))
         return customer.serialize(), status.HTTP_200_OK
 
+    #------------------------------------------------------------------
+    # UPDATE AN EXISTING PET
+    #------------------------------------------------------------------
+    @api.doc('update_customers', security='apikey')
+    @api.response(404, 'Customer not found')
+    @api.response(400, 'The posted Customer data was not valid')
+    @api.expect(customer_model)
+    @api.marshal_with(customer_model)
+    def put(self, customer_id):
+        """
+        Update a Customer
+        This endpoint will update a Customer based the body that is posted
+        """
+        app.logger.info('Request to Update a customer with id [%s]', customer_id)
+        customer = Customer.find(customer_id)
+        if not customer:
+            api.abort(status.HTTP_404_NOT_FOUND, "Customer with id '{}' was not found.".format(customer_id))
+        app.logger.debug('Payload = %s', api.payload)
+        data = api.payload
+        customer.deserialize(data)
+        customer.id = customer_id
+        customer.save()
+        return customer.serialize(), status.HTTP_200_OK
+
 ######################################################################
 #  PATH: /customers
 ######################################################################
@@ -244,7 +253,6 @@ class CustomerCollection(Resource):
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Customer created successfully')
     @api.marshal_with(customer_model, code=201)
-    @token_required
     def post(self):
         """
         Creates a Customer
@@ -281,4 +289,4 @@ class SuspendResource(Resource):
         customer.active = False
         customer.update()
         app.logger.info("Customer with ID [%s] suspended.", customer.id)
-        return customer.serialize(), status.HTTP_200_OK
+        return customer.serialize(), status.HTTP_200_OK 
