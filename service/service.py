@@ -130,9 +130,8 @@ api = Api(app,
           default='customers',
           default_label='Customer operations',
           doc='/apidocs', # default also could use doc='/apidocs/'
-          authorizations=authorizations,
-          # prefix=''
-         )
+         #   authorizations=authorizations
+          )
 
 # Define the model so that the docs reflect what can be sent
 create_model = api.model('Customer', {
@@ -214,6 +213,30 @@ class CustomerResource(Resource):
         customer = Customer.find(customer_id)
         if not customer:
             api.abort(status.HTTP_404_NOT_FOUND, "Customer with id '{}' was not found.".format(customer_id))
+        return customer.serialize(), status.HTTP_200_OK
+
+    #------------------------------------------------------------------
+    # UPDATE AN EXISTING PET
+    #------------------------------------------------------------------
+    @api.doc('update_customers', security='apikey')
+    @api.response(404, 'Customer not found')
+    @api.response(400, 'The posted Customer data was not valid')
+    @api.expect(customer_model)
+    @api.marshal_with(customer_model)
+    def put(self, customer_id):
+        """
+        Update a Customer
+        This endpoint will update a Customer based the body that is posted
+        """
+        app.logger.info('Request to Update a customer with id [%s]', customer_id)
+        customer = Customer.find(customer_id)
+        if not customer:
+            api.abort(status.HTTP_404_NOT_FOUND, "Customer with id '{}' was not found.".format(customer_id))
+        app.logger.debug('Payload = %s', api.payload)
+        data = api.payload
+        customer.deserialize(data)
+        customer.id = customer_id
+        customer.save()
         return customer.serialize(), status.HTTP_200_OK
 
 ######################################################################
