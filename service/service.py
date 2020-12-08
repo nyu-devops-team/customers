@@ -158,9 +158,9 @@ customer_model = api.inherit(
 
 # query string arguments
 customer_args = reqparse.RequestParser()
-customer_args.add_argument('last_name', type=str, required=False, help='List Customers by last name')
 customer_args.add_argument('first_name', type=str, required=False, help='List Customers by first name')
-customer_args.add_argument('email', type=str, required=False, help='List Customers email')
+customer_args.add_argument('last_name', type=str, required=False, help='List Customers by last name')
+customer_args.add_argument('email', type=str, required=False, help='List Customers by email')
 customer_args.add_argument('address', type=str, required=False, help='List Customers by address')
 customer_args.add_argument('active', type=inputs.boolean, required=False, help='List Customers by availability')
 
@@ -216,7 +216,7 @@ class CustomerResource(Resource):
         return customer.serialize(), status.HTTP_200_OK
 
     #------------------------------------------------------------------
-    # UPDATE AN EXISTING PET
+    # UPDATE AN EXISTING CUSTOMER
     #------------------------------------------------------------------
     @api.doc('update_customers', security='apikey')
     @api.response(404, 'Customer not found')
@@ -245,6 +245,39 @@ class CustomerResource(Resource):
 @api.route('/customers', strict_slashes=False)
 class CustomerCollection(Resource):
     """ Handles all interactions with collections of Customers """
+    #------------------------------------------------------------------
+    # LIST ALL CUSTOMERS
+    #------------------------------------------------------------------
+    @api.doc('list_customers')
+    @api.expect(customer_args, validate=True)
+    @api.marshal_list_with(customer_model)
+    def get(self):
+        """ Returns all of the Customers unless a query parameter is specified """
+        app.logger.info('Request to list Customers...')
+        customers = []
+        args = customer_args.parse_args()
+        if args['last_name']:
+            app.logger.info('Filtering by last name: %s', args['last_name'])
+            customers = Customer.find_by_last_name(args['last_name'])
+        elif args['first_name']:
+            app.logger.info('Filtering by first name: %s', args['first_name'])
+            customers = Customer.find_by_first_name(args['first_name'])
+        elif args['email']:
+            app.logger.info('Filtering by email: %s', args['email'])
+            customers = Customer.find_by_email(args['email'])
+        elif args['address']:
+            app.logger.info('Filtering by address: %s', args['address'])
+            customers = Customer.find_by_address(args['address'])
+        elif args['active'] is not None:
+            app.logger.info('Filtering by active: %s', args['active'])
+            customers = Customer.find_by_active(args['active'])
+        else:
+            customers = Customer.all()
+
+        results = [customer.serialize() for customer in customers]
+        app.logger.info('[%s] Customers returned', len(results))
+        return results, status.HTTP_200_OK
+
     #------------------------------------------------------------------
     # ADD A NEW CUSTOMER
     #------------------------------------------------------------------
@@ -290,3 +323,4 @@ class SuspendResource(Resource):
         customer.update()
         app.logger.info("Customer with ID [%s] suspended.", customer.id)
         return customer.serialize(), status.HTTP_200_OK 
+    
