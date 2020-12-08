@@ -272,17 +272,17 @@ class CustomerCollection(Resource):
         app.logger.info('Request to list Customers...')
         customers = []
         args = customer_args.parse_args()
-        # if args['category']:
-        #     app.logger.info('Filtering by category: %s', args['category'])
-        #     customers = Customer.find_by_category(args['category'])
-        # elif args['name']:
-        #     app.logger.info('Filtering by name: %s', args['name'])
-        #     customers = Customer.find_by_name(args['name'])
-        # elif args['available'] is not None:
-        #     app.logger.info('Filtering by availability: %s', args['available'])
-        #     customers = Customer.find_by_availability(args['available'])
-        # else:
-        customers = Customer.all()
+        if args['category']:
+            app.logger.info('Filtering by category: %s', args['category'])
+            customers = Customer.find_by_category(args['category'])
+        elif args['name']:
+            app.logger.info('Filtering by name: %s', args['name'])
+            customers = Customer.find_by_name(args['name'])
+        elif args['available'] is not None:
+            app.logger.info('Filtering by availability: %s', args['available'])
+            customers = Customer.find_by_availability(args['available'])
+        else:
+            customers = Customer.all()
 
         app.logger.info('[%s] Customers returned', len(customers))
         results = [customer.serialize() for customer in customers]
