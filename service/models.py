@@ -117,6 +117,7 @@ class Customer(db.Model):
             raise DataValidationError("Update called with empty ID field")
         db.session.commit()
 
+
     ##################################################
     # CLASS METHODS
     ##################################################
