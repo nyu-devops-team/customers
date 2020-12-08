@@ -89,13 +89,13 @@ class TestCustomers(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertIn(b'Customer Demo REST API Service', resp.data)
 
-    # def test_get_customer_list(self):
-    #     """Get a list of Customers"""
-    #     self._create_customers(3)
-    #     resp = self.app.get("/customers")
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     data = resp.get_json()
-    #     self.assertEqual(len(data), 3)
+    def test_get_customer_list(self):
+        """Get a list of Customers"""
+        self._create_customers(3)
+        resp = self.app.get("/customers")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 3)
 
     def test_get_customer(self):
         """ Get a single Customer """
