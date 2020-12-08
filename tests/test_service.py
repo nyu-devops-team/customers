@@ -367,12 +367,12 @@ class TestCustomers(unittest.TestCase):
         resp = self.app.put('/customers')
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    @mock.patch('service.service.Customer.all')
-    def test_search_bad_data(self, customer_find_mock):
-        customer_find_mock.side_effect = Exception()
-        resp = self.app.get('/customers', query_string='id=20')
+    # @mock.patch('service.service.Customer.all')
+    # def test_search_bad_data(self, customer_find_mock):
+    #     customer_find_mock.side_effect = Exception()
+    #     resp = self.app.get('/customers', query_string='id=20')
 
-        self.assertEqual(resp.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+    #     self.assertEqual(resp.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ######################################################################
 #   M A I N

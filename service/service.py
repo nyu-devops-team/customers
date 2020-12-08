@@ -290,8 +290,8 @@ class CustomerCollection(Resource):
         else:
             customers = Customer.all()
 
-        app.logger.info('[%s] Customers returned', len(customers))
         results = [customer.serialize() for customer in customers]
+        app.logger.info('[%s] Customers returned', len(results))
         return results, status.HTTP_200_OK
 
     #------------------------------------------------------------------
