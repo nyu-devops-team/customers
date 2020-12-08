@@ -160,7 +160,7 @@ customer_model = api.inherit(
 customer_args = reqparse.RequestParser()
 customer_args.add_argument('last_name', type=str, required=False, help='List Customers by last name')
 customer_args.add_argument('first_name', type=str, required=False, help='List Customers by first name')
-customer_args.add_argument('email', type=str, required=False, help='List Customers email')
+customer_args.add_argument('email', type=str, required=False, help='List Customers by email')
 customer_args.add_argument('address', type=str, required=False, help='List Customers by address')
 customer_args.add_argument('active', type=inputs.boolean, required=False, help='List Customers by availability')
 
@@ -265,7 +265,7 @@ class CustomerCollection(Resource):
     # LIST ALL CUSTOMERS
     #------------------------------------------------------------------
     @api.doc('list_customers')
-    # @api.expect(customer_args, validate=True)
+    @api.expect(customer_args, validate=True)
     @api.marshal_list_with(customer_model)
     def get(self):
         """ Returns all of the Customers unless a query parameter is specified """
