@@ -153,3 +153,19 @@ Scenario: Query Customers by Address
     Then I should see all customers with "888 Brooklyn St" in the results
     And I should not see "123 Brooklyn Ave" in the results
     And I should not see "100 Main St" in the results
+
+Scenario: Query Customers by Active Status - False
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I select "False" in the "Active" dropdown
+    And I press the "search" button
+    Then I should see all customers with "false" in the results
+    And I should not see "true" in the results
+
+Scenario: Query Customers by Active Status - True
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I select "True" in the "Active" dropdown
+    And I press the "search" button
+    Then I should see all customers with "true" in the results
+    And I should not see "false" in the results

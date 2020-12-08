@@ -147,7 +147,7 @@ def step_impl(context, text_string):
             text_string
         )
     )
-    expect(found).to_be(True)
+    expect(found).to_be(True)   
 
 @then('I should not see "{text_string}" in the results')
 def step_impl(context, text_string):
