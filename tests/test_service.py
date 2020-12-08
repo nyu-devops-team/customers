@@ -89,13 +89,13 @@ class TestCustomers(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertIn(b'Customer Demo REST API Service', resp.data)
 
-    # def test_get_customer_list(self):
-    #     """Get a list of Customers"""
-    #     self._create_customers(3)
-    #     resp = self.app.get("/customers")
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     data = resp.get_json()
-    #     self.assertEqual(len(data), 3)
+    def test_get_customer_list(self):
+        """Get a list of Customers"""
+        self._create_customers(3)
+        resp = self.app.get("/customers")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 3)
 
     def test_get_customer(self):
         """ Get a single Customer """
@@ -201,28 +201,30 @@ class TestCustomers(unittest.TestCase):
             new_customer["active"], test_customer.active, "active does not match"
         )
 
-    # def test_update_customer(self):
-    #     """ Update an existing Customer """
-    #     # create a customer to update
-    #     test_customer = CustomerFactory()
-    #     resp = self.app.post(
-    #         "/customers",
-    #         json=test_customer.serialize(),
-    #         content_type="application/json",
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+    def test_update_customer(self):
+        """ Update an existing Customer """
+        # create a customer to update
+        test_customer = CustomerFactory()
+        resp = self.app.post(
+            "/customers",
+            json=test_customer.serialize(),
+            content_type="application/json",
+            headers = self.headers
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
-    #     # update the customer
-    #     new_customer = resp.get_json()
-    #     new_customer["address"] = "2014 Forest Hills Drive"
-    #     resp = self.app.put(
-    #         "/customers/{}".format(new_customer["id"]),
-    #         json=new_customer,
-    #         content_type="application/json",
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     updated_customer = resp.get_json()
-    #     self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
+        # update the customer
+        new_customer = resp.get_json()
+        new_customer["address"] = "2014 Forest Hills Drive"
+        resp = self.app.put(
+            "/customers/{}".format(new_customer["id"]),
+            json=new_customer,
+            content_type="application/json",
+            headers = self.headers
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_customer = resp.get_json()
+        self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
     def test_delete_a_customer(self):
         """ Delete a Customer """
