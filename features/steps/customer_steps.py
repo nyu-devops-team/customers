@@ -9,6 +9,7 @@ from os import getenv
 import logging
 import json
 import requests
+import time
 from behave import *
 from compare import expect, ensure
 from selenium.webdriver.common.by import By
@@ -69,6 +70,7 @@ def step_impl(context, message):
 def step_impl(context, button):
     button_id = button.lower() + '-btn'
     context.driver.find_element_by_id(button_id).click()
+    time.sleep(1)
 
 @then('I should see "{name}" in the results')
 def step_impl(context, name):

@@ -162,7 +162,7 @@ customer_args.add_argument('first_name', type=str, required=False, help='List Cu
 customer_args.add_argument('last_name', type=str, required=False, help='List Customers by last name')
 customer_args.add_argument('email', type=str, required=False, help='List Customers by email')
 customer_args.add_argument('address', type=str, required=False, help='List Customers by address')
-customer_args.add_argument('active', type=inputs.boolean, required=False, help='List Customers by availability')
+customer_args.add_argument('active', type=str, required=False, help='List Customers by availability')
 
 ######################################################################
 # Function to generate a random API key (good for testing)
@@ -212,7 +212,7 @@ class CustomerResource(Resource):
         app.logger.info("Request to Retrieve a customer with id [%s]", customer_id)
         customer = Customer.find(customer_id)
         if not customer:
-            api.abort(status.HTTP_404_NOT_FOUND, "Customer with id '{}' was not found.".format(customer_id))
+            raise NotFound("404 Not Found: Customer with the id was not found.")
         return customer.serialize(), status.HTTP_200_OK
 
     #------------------------------------------------------------------
@@ -263,26 +263,30 @@ class CustomerCollection(Resource):
     # LIST ALL CUSTOMERS
     #------------------------------------------------------------------
     @api.doc('list_customers')
-    @api.expect(customer_args, validate=True)
+    @api.expect(customer_args, validate=False)
     @api.marshal_list_with(customer_model)
     def get(self):
         """ Returns all of the Customers unless a query parameter is specified """
         app.logger.info('Request to list Customers...')
         customers = []
-        args = customer_args.parse_args()
-        if args['last_name']:
+        app.logger.info("First time")
+        # args = customer_args.parse_args()
+        # change to request args to by pass the odd bug for reqparse
+        args = request.args
+        app.logger.info("Second time %s", args)
+        if args.get('last_name'):
             app.logger.info('Filtering by last name: %s', args['last_name'])
             customers = Customer.find_by_last_name(args['last_name'])
-        elif args['first_name']:
+        elif args.get('first_name'):
             app.logger.info('Filtering by first name: %s', args['first_name'])
             customers = Customer.find_by_first_name(args['first_name'])
-        elif args['email']:
+        elif args.get('email'):
             app.logger.info('Filtering by email: %s', args['email'])
             customers = Customer.find_by_email(args['email'])
-        elif args['address']:
+        elif args.get('address'):
             app.logger.info('Filtering by address: %s', args['address'])
             customers = Customer.find_by_address(args['address'])
-        elif args['active'] is not None:
+        elif args.get('active'):
             app.logger.info('Filtering by active: %s', args['active'])
             customers = Customer.find_by_active(args['active'])
         else:
