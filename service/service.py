@@ -166,22 +166,6 @@ customer_args.add_argument('address', type=str, required=False, help='List Custo
 customer_args.add_argument('active', type=inputs.boolean, required=False, help='List Customers by availability')
 
 ######################################################################
-# Authorization Decorator
-######################################################################
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'X-Api-Key' in request.headers:
-            token = request.headers['X-Api-Key']
-
-        if app.config.get('API_KEY') and app.config['API_KEY'] == token:
-            return f(*args, **kwargs)
-        else:
-            return {'message': 'Invalid or missing token'}, 401
-    return decorated
-
-######################################################################
 # Function to generate a random API key (good for testing)
 ######################################################################
 def generate_apikey():
@@ -244,7 +228,6 @@ class CustomerCollection(Resource):
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Customer created successfully')
     @api.marshal_with(customer_model, code=201)
-    @token_required
     def post(self):
         """
         Creates a Customer
