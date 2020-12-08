@@ -131,11 +131,16 @@ api = Api(app,
           default_label='Customer operations',
           doc='/apidocs', # default also could use doc='/apidocs/'
 <<<<<<< HEAD
+<<<<<<< HEAD
           authorizations=authorizations
 =======
          #   authorizations=authorizations
 >>>>>>> master-restplus
           )
+=======
+          authorizations=authorizations
+        )
+>>>>>>> c5282739ba496aa00bf2046e840ed06ab8b5eca0
 
 # Define the model so that the docs reflect what can be sent
 create_model = api.model('Customer', {
@@ -293,4 +298,12 @@ class SuspendResource(Resource):
         customer.active = False
         customer.update()
         app.logger.info("Customer with ID [%s] suspended.", customer.id)
+<<<<<<< HEAD
         return customer.serialize(), status.HTTP_200_OK 
+=======
+<<<<<<< HEAD
+        return customer.serialize(), status.HTTP_200_OK 
+=======
+        return customer.serialize(), status.HTTP_200_OK
+>>>>>>> 154b1b1b0de444d446e60786d3ec6d571c592bd3
+>>>>>>> c5282739ba496aa00bf2046e840ed06ab8b5eca0

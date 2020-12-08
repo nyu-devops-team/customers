@@ -202,6 +202,7 @@ class TestCustomers(unittest.TestCase):
         )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     def test_update_customer(self):
         """ Update an existing Customer """
@@ -229,6 +230,8 @@ class TestCustomers(unittest.TestCase):
         self.assertEqual(updated_customer["address"], "2014 Forest Hills Drive")
 
 >>>>>>> master-restplus
+=======
+>>>>>>> c5282739ba496aa00bf2046e840ed06ab8b5eca0
     # def test_delete_a_customer(self):
     #     """ Delete a Customer """
     #     test_customer = self._create_customers(1)[0]

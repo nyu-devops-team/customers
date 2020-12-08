@@ -118,6 +118,7 @@ class Customer(db.Model):
         db.session.commit()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     def save(self):
         """ Saves a Customer in the database """
@@ -128,6 +129,8 @@ class Customer(db.Model):
         else:
             self.create()
 >>>>>>> master-restplus
+=======
+>>>>>>> c5282739ba496aa00bf2046e840ed06ab8b5eca0
 
     ##################################################
     # CLASS METHODS
