@@ -46,12 +46,14 @@ def step_impl(context):
         payload = json.dumps(data)
         context.resp = requests.post(create_url, data=payload, headers=headers)
         expect(context.resp.status_code).to_equal(201)
+    time.sleep(1)
 
 
 @when(u'I visit the "home page"')
 def step_impl(context):
     """ Make a call to the base URL """
     context.driver.get(context.base_url)
+    time.sleep(1)
 
 
 @then(u'I should see "{message}" in the title')
@@ -88,12 +90,14 @@ def step_impl(context, element_name, text_string):
     element = context.driver.find_element_by_id(element_id)
     element.clear()
     element.send_keys(text_string)
+    time.sleep(1)
 
 @when('I select "{text}" in the "{element_name}" dropdown')
 def step_impl(context, text, element_name):
     element_id = ID_PREFIX + element_name.lower()
     element = Select(context.driver.find_element_by_id(element_id))
     element.select_by_visible_text(text)
+    time.sleep(1)
 
 
 @then('I should see the message "{message}"')
@@ -138,6 +142,7 @@ def step_impl(context, element_name, text_string):
     )
     element.clear()
     element.send_keys(text_string)
+    time.sleep(1)
 
 @then('I should see all customers with "{text_string}" in the results')
 def step_impl(context, text_string):
@@ -168,6 +173,7 @@ def step_impl(context, element_name):
     )
     context.clipboard = element.get_attribute('value')
     logging.info('Clipboard contains: %s', context.clipboard)
+    time.sleep(1)
 
 @when('I paste the "{element_name}" field')
 def step_impl(context, element_name):
@@ -178,3 +184,4 @@ def step_impl(context, element_name):
     )
     element.clear()
     element.send_keys(context.clipboard)
+    time.sleep(1)
