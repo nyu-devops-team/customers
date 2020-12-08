@@ -117,6 +117,17 @@ class Customer(db.Model):
             raise DataValidationError("Update called with empty ID field")
         db.session.commit()
 
+<<<<<<< HEAD
+=======
+    def save(self):
+        """ Saves a Customer in the database """
+        if not self.first_name and not self.last_name:   # name is the only required field
+            raise DataValidationError('name attribute is not set')
+        if self.id:
+            self.update()
+        else:
+            self.create()
+>>>>>>> master-restplus
 
     ##################################################
     # CLASS METHODS

@@ -130,7 +130,11 @@ api = Api(app,
           default='customers',
           default_label='Customer operations',
           doc='/apidocs', # default also could use doc='/apidocs/'
+<<<<<<< HEAD
           authorizations=authorizations
+=======
+         #   authorizations=authorizations
+>>>>>>> master-restplus
           )
 
 # Define the model so that the docs reflect what can be sent
