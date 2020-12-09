@@ -5,7 +5,11 @@
 
 The customers resource is a representation of the customer accounts of the eCommerce site
 
-The app: https://nyu-customer-service-f20.us-south.cf.appdomain.cloud
+The app (dev): https://nyu-customer-service-f20.us-south.cf.appdomain.cloud
+Swagger docs: https://nyu-customer-service-f20.us-south.cf.appdomain.cloud/apidocs
+The app (prod): https://nyu-customer-service-f20-prod.us-south.cf.appdomain.cloud/
+Swagger docs:  https://nyu-customer-service-f20-prod.us-south.cf.appdomain.cloud/apidocs
+
 
 ## API Documentation
 ### URLs
